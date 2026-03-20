@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable;
+namespace Inertify\Table;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as BaseBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
-use Taras\InertiaHeadlessTable\Support\TableState;
+use Inertify\Table\Support\TableState;
 
 class Table
 {
@@ -31,10 +31,10 @@ class Table
 
     private function __construct(private readonly string $name)
     {
-        $this->defaultPerPage = (int) config('inertia-headless-table.default_per_page', 15);
+        $this->defaultPerPage = (int) config('inertify-table.default_per_page', 15);
         $this->perPageOptions = array_values(array_map(
             static fn(mixed $value) => (int) $value,
-            config('inertia-headless-table.per_page_options', [15, 30, 50])
+            config('inertify-table.per_page_options', [15, 30, 50])
         ));
     }
 
@@ -326,10 +326,10 @@ class Table
     public function queryKeys(): array
     {
         return [
-            'page' => sprintf((string) config('inertia-headless-table.query_keys.page', '%s_page'), $this->name),
-            'perPage' => sprintf((string) config('inertia-headless-table.query_keys.per_page', '%s_per_page'), $this->name),
-            'sort' => sprintf((string) config('inertia-headless-table.query_keys.sort', '%s_sort'), $this->name),
-            'filters' => sprintf((string) config('inertia-headless-table.query_keys.filters', '%s_filters'), $this->name),
+            'page' => sprintf((string) config('inertify-table.query_keys.page', '%s_page'), $this->name),
+            'perPage' => sprintf((string) config('inertify-table.query_keys.per_page', '%s_per_page'), $this->name),
+            'sort' => sprintf((string) config('inertify-table.query_keys.sort', '%s_sort'), $this->name),
+            'filters' => sprintf((string) config('inertify-table.query_keys.filters', '%s_filters'), $this->name),
         ];
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable;
+namespace Inertify\Table;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -13,16 +13,16 @@ class HeadlessTableServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/inertia-headless-table.php',
-            'inertia-headless-table'
+            __DIR__ . '/../config/inertify-table.php',
+            'inertify-table'
         );
     }
 
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/inertia-headless-table.php' => config_path('inertia-headless-table.php'),
-        ], 'inertia-headless-table-config');
+            __DIR__ . '/../config/inertify-table.php' => config_path('inertify-table.php'),
+        ], 'inertify-table-config');
 
         ResponseFactory::macro('tablePayload', function (
             string $name,

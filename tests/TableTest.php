@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable\Tests;
+namespace Inertify\Table\Tests;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Mockery;
-use Taras\InertiaHeadlessTable\Column;
-use Taras\InertiaHeadlessTable\Filter;
-use Taras\InertiaHeadlessTable\InertiaTable;
-use Taras\InertiaHeadlessTable\Table;
+use Inertify\Table\Column;
+use Inertify\Table\Filter;
+use Inertify\Table\InertifyTable;
+use Inertify\Table\Table;
 
 class TableTest extends TestCase
 {
@@ -24,7 +24,7 @@ class TableTest extends TestCase
 
     public function test_it_applies_filtering_sorting_and_pagination(): void
     {
-        $table = InertiaTable::make('users')
+        $table = InertifyTable::make('users')
             ->allowedSorts(['name', 'email'])
             ->allowedFilters([
                 Filter::partial('name'),

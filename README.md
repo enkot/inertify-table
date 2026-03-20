@@ -1,4 +1,4 @@
-# inertia-headless-table
+# inertify/table
 
 Headless table tooling for Laravel + Inertia + Vue with:
 
@@ -11,24 +11,24 @@ Headless table tooling for Laravel + Inertia + Vue with:
 ## Install
 
 ```bash
-composer require taras/inertia-headless-table
+composer require inertify/table
 ```
 
 If you publish config:
 
 ```bash
-php artisan vendor:publish --tag=inertia-headless-table-config
+php artisan vendor:publish --tag=inertify/table-config
 ```
 
 Optional Vue package build output:
 
 ```bash
-npm install @taras/inertia-headless-table-vue
+npm install @inertify/table-vue
 ```
 
 ## Publish to Packagist
 
-1. Make sure your package name in `composer.json` is final (already set to `taras/inertia-headless-table`).
+1. Make sure your package name in `composer.json` is final (already set to `inertify/table`).
 2. Commit and push `main` to a **public** Git repository.
 3. Create a semantic version tag and push it:
 
@@ -42,7 +42,7 @@ git push origin v1.0.0
 6. After indexing, install with Composer:
 
 ```bash
-composer require taras/inertia-headless-table
+composer require inertify/table
 ```
 
 ### Recommended release flow
@@ -53,18 +53,38 @@ composer require taras/inertia-headless-table
 - Push tag (`git push origin vX.Y.Z`)
 - Verify package page on Packagist
 
+## Publish Vue package to npm (automated)
+
+This repository includes GitHub Actions workflow at `.github/workflows/publish-npm.yml`.
+
+It publishes `@inertify/table-vue` when you push a tag `v*`.
+
+### One-time setup
+
+1. In npm org `inertify`, create a **granular access token** with publish permissions for `@inertify/table-vue` and 2FA bypass for automation.
+2. In GitHub repo settings, add secret `NPM_TOKEN` with that token value.
+
+### Release commands
+
+```bash
+npm version patch
+git push origin main --follow-tags
+```
+
+The workflow validates that tag version matches `package.json` version, builds package, and publishes to npm.
+
 ## Laravel API
 
 ```php
 use Inertia\Inertia;
 use App\Models\User;
-use Taras\InertiaHeadlessTable\Column;
-use Taras\InertiaHeadlessTable\Filter;
-use Taras\InertiaHeadlessTable\InertiaTable;
+use Inertify\Table\Column;
+use Inertify\Table\Filter;
+use Inertify\Table\InertifyTable;
 
 public function index()
 {
-    $table = InertiaTable::make('users')
+    $table = InertifyTable::make('users')
         ->columns([
         Column::make('name')->sortable()->filterable(),
         Column::make('email')->sortable()->filterable(),
@@ -103,7 +123,7 @@ Use explicit `Filter::...` entries in `allowedFilters([...])` when you need cust
 Before (explicit filters everywhere):
 
 ```php
-$table = InertiaTable::make('users')
+$table = InertifyTable::make('users')
   ->columns([
     Column::make('id', 'ID'),
     Column::make('name', 'Name'),
@@ -119,7 +139,7 @@ $table = InertiaTable::make('users')
 After (inferred defaults):
 
 ```php
-$table = InertiaTable::make('users')
+$table = InertifyTable::make('users')
   ->columns([
     Column::make('id', 'ID')->type('number'),
     Column::make('name', 'Name'),
@@ -159,7 +179,7 @@ import {
   useHeadlessTableSorting,
   useHeadlessTablePagination,
   useHeadlessTableSelection,
-} from "@taras/inertia-headless-table-vue";
+} from "@inertify/table-vue";
 
 const table = useHeadlessTable(props.usersTable, {
   only: ["users", "usersTable"],
@@ -189,7 +209,7 @@ import {
   HeadlessTableFilters,
   HeadlessTableSorting,
   HeadlessTablePagination,
-} from "@taras/inertia-headless-table-vue";
+} from "@inertify/table-vue";
 
 defineProps<{ usersTable: any }>();
 </script>
@@ -218,7 +238,7 @@ defineProps<{ usersTable: any }>();
 ### Direct table API
 
 ```ts
-import { useHeadlessTable } from "@taras/inertia-headless-table-vue";
+import { useHeadlessTable } from "@inertify/table-vue";
 
 const table = useHeadlessTable(props.usersTable, {
   only: ["users", "usersTable"],
@@ -302,4 +322,4 @@ Range filters use nested `from` / `to` values:
 
 `Filter::numberRange(...)` and `Filter::dateRange(...)` apply inclusive bounds (`>= from`, `<= to`).
 
-Customize this in `config/inertia-headless-table.php`.
+Customize this in `config/inertify-table.php`.

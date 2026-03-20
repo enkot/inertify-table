@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable;
+namespace Inertify\Table;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
@@ -16,8 +16,7 @@ class Sort
         public string $label,
         public string $column,
         public ?Closure $callback = null
-    ) {
-    }
+    ) {}
 
     public static function make(string $key, ?string $column = null, ?string $label = null): self
     {

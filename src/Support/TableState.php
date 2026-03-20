@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable\Support;
+namespace Inertify\Table\Support;
 
 class TableState
 {
@@ -12,8 +12,7 @@ class TableState
         public readonly ?string $sort,
         public readonly ?string $direction,
         public readonly array $filters
-    ) {
-    }
+    ) {}
 
     public function toArray(): array
     {

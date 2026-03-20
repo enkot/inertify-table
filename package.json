@@ -1,7 +1,7 @@
 {
-  "name": "@taras/inertia-headless-table-vue",
+  "name": "@inertify/table-vue",
   "version": "0.1.0",
-  "description": "Headless Vue composables and components for inertia-headless-table.",
+  "description": "Headless Vue composables and components for inertify/table.",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

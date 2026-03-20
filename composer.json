@@ -1,5 +1,5 @@
 {
-  "name": "taras/inertia-headless-table",
+  "name": "inertify/table",
   "description": "Headless tables for Laravel + Vue + Inertia with pagination, sorting, and filtering.",
   "type": "library",
   "license": "MIT",
@@ -26,18 +26,18 @@
   },
   "autoload": {
     "psr-4": {
-      "Taras\\InertiaHeadlessTable\\": "src/"
+      "Inertify\\Table\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Taras\\InertiaHeadlessTable\\Tests\\": "tests/"
+      "Inertify\\Table\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Taras\\InertiaHeadlessTable\\HeadlessTableServiceProvider"
+        "Inertify\\Table\\HeadlessTableServiceProvider"
       ]
     }
   },

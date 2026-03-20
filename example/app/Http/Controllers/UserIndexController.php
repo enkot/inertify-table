@@ -7,14 +7,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
-use Taras\InertiaHeadlessTable\Column;
-use Taras\InertiaHeadlessTable\InertiaTable;
+use Inertify\Table\Column;
+use Inertify\Table\InertifyTable;
 
 class UserIndexController extends Controller
 {
     public function __invoke(): Response
     {
-        $table = InertiaTable::make('users')
+        $table = InertifyTable::make('users')
             ->columns([
                 Column::make('id', 'ID')->type('number')->filterable(),
                 Column::make('name', 'Name')->sortable()->filterable(),

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable\Tests;
+namespace Inertify\Table\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use Taras\InertiaHeadlessTable\HeadlessTableServiceProvider;
+use Inertify\Table\HeadlessTableServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

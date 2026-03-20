@@ -14,13 +14,13 @@ This folder contains copy-paste example files showing how to use this package in
 1. Install backend dependencies:
 
 ```bash
-composer require inertiajs/inertia-laravel taras/inertia-headless-table
+composer require inertiajs/inertia-laravel inertify/table
 ```
 
 2. Install frontend dependencies:
 
 ```bash
-npm install @inertiajs/vue3 @taras/inertia-headless-table-vue
+npm install @inertiajs/vue3 @inertify/table-vue
 ```
 
 3. Install shadcn-vue and add the components used by the example:

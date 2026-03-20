@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Taras\InertiaHeadlessTable;
+namespace Inertify\Table;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
