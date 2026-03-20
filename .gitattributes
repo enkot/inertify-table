@@ -1,0 +1,11 @@
+/.github export-ignore
+/example export-ignore
+/tests export-ignore
+/phpunit.xml.dist export-ignore
+/.phpunit.result.cache export-ignore
+/node_modules export-ignore
+/vendor export-ignore
+/package.json export-ignore
+/package-lock.json export-ignore
+/tsconfig.json export-ignore
+/resources export-ignore

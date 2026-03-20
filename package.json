@@ -1,0 +1,25 @@
+{
+  "name": "@taras/inertia-headless-table-vue",
+  "version": "0.1.0",
+  "description": "Headless Vue composables and components for inertia-headless-table.",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "resources/js"
+  ],
+  "scripts": {
+    "build": "tsup resources/js/index.ts --dts --format esm,cjs --external vue,@inertiajs/vue3",
+    "check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@inertiajs/vue3": "^2.0.0",
+    "vue": "^3.3.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "typescript": "^5.5.4"
+  }
+}
