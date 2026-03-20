@@ -1,13 +1,13 @@
 import { defineComponent, type PropType } from "vue";
-import { tryUseHeadlessTableContext } from "../context";
-import type { UseHeadlessTableApi } from "../useHeadlessTable";
+import { tryUseInertifyTableContext } from "../context";
+import type { UseInertifyTableApi } from "../useInertifyTable";
 import type { TableColumn } from "../types";
 
 export default defineComponent({
   name: "HeadlessTableCells",
   props: {
     table: {
-      type: Object as PropType<UseHeadlessTableApi>,
+      type: Object as PropType<UseInertifyTableApi>,
       required: false,
       default: undefined,
     },
@@ -21,7 +21,7 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const table = props.table ?? tryUseHeadlessTableContext();
+    const table = props.table ?? tryUseInertifyTableContext();
 
     if (!table) {
       throw new Error(

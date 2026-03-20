@@ -1,12 +1,12 @@
 import { defineComponent } from "vue";
-import { useHeadlessTableContext } from "../context";
-import { useHeadlessTableSorting } from "../useHeadlessTableSorting";
+import { useInertifyTableContext } from "../context";
+import { useInertifyTableSorting } from "../useInertifyTableSorting";
 
 export default defineComponent({
   name: "HeadlessTableSorting",
   setup(_, { slots }) {
-    const table = useHeadlessTableContext();
-    const sorting = useHeadlessTableSorting(table);
+    const table = useInertifyTableContext();
+    const sorting = useInertifyTableSorting(table);
 
     return () =>
       slots.default?.({

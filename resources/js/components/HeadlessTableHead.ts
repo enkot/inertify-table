@@ -1,14 +1,14 @@
 import { defineComponent, type PropType } from "vue";
-import { tryUseHeadlessTableContext } from "../context";
-import { useHeadlessTableSorting } from "../useHeadlessTableSorting";
-import type { UseHeadlessTableApi } from "../useHeadlessTable";
+import { tryUseInertifyTableContext } from "../context";
+import { useInertifyTableSorting } from "../useInertifyTableSorting";
+import type { UseInertifyTableApi } from "../useInertifyTable";
 import type { TableColumn } from "../types";
 
 export default defineComponent({
   name: "HeadlessTableHead",
   props: {
     table: {
-      type: Object as PropType<UseHeadlessTableApi>,
+      type: Object as PropType<UseInertifyTableApi>,
       required: false,
       default: undefined,
     },
@@ -18,7 +18,7 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const table = props.table ?? tryUseHeadlessTableContext();
+    const table = props.table ?? tryUseInertifyTableContext();
 
     if (!table) {
       throw new Error(
@@ -26,7 +26,7 @@ export default defineComponent({
       );
     }
 
-    const sorting = useHeadlessTableSorting(table);
+    const sorting = useInertifyTableSorting(table);
 
     const visibleColumns = (): TableColumn[] => {
       const columns = table.meta.value.columns;

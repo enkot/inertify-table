@@ -9,15 +9,15 @@ import {
 import type {
   HeadlessFilterRule,
   UiFilter,
-  UseHeadlessTableFiltersApi,
-} from "./useHeadlessTableFilters";
+  UseInertifyTableFiltersApi,
+} from "./useInertifyTableFilters";
 import {
   defaultRule,
   isBlankFilterValue,
   toOperatorValue,
   toRangeValue,
   toText,
-} from "./useHeadlessTableFilters";
+} from "./useInertifyTableFilters";
 
 export interface UseDraftFilterEditorApi {
   draftFilterKey: Ref<string>;
@@ -37,7 +37,7 @@ export interface UseDraftFilterEditorApi {
 }
 
 export function useDraftFilterEditor(
-  filters: UseHeadlessTableFiltersApi,
+  filters: UseInertifyTableFiltersApi,
 ): UseDraftFilterEditorApi {
   const draftFilterKey = ref("");
   const draftRule = ref<HeadlessFilterRule>("is");
@@ -224,5 +224,5 @@ export function useDraftFilterEditor(
   };
 }
 
-export const useHeadlessTableDraftFilterEditor = useDraftFilterEditor;
-export type UseHeadlessTableDraftFilterEditorApi = UseDraftFilterEditorApi;
+export const useInertifyTableDraftFilterEditor = useDraftFilterEditor;
+export type UseInertifyTableDraftFilterEditorApi = UseDraftFilterEditorApi;

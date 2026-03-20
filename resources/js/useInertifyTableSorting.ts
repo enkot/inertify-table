@@ -1,9 +1,9 @@
 import { computed, type ComputedRef } from "vue";
-import { useHeadlessTableContext } from "./context";
-import type { UseHeadlessTableApi } from "./useHeadlessTable";
+import { useInertifyTableContext } from "./context";
+import type { UseInertifyTableApi } from "./useInertifyTable";
 import type { SortDirection, TableSort } from "./types";
 
-export interface UseHeadlessTableSortingApi {
+export interface UseInertifyTableSortingApi {
   sorts: ComputedRef<TableSort[]>;
   activeSort: ComputedRef<string | null>;
   activeDirection: ComputedRef<SortDirection>;
@@ -19,10 +19,10 @@ export interface UseHeadlessTableSortingApi {
   ) => boolean;
 }
 
-export function useHeadlessTableSorting(
-  tableApi?: UseHeadlessTableApi,
-): UseHeadlessTableSortingApi {
-  const table = tableApi ?? useHeadlessTableContext();
+export function useInertifyTableSorting(
+  tableApi?: UseInertifyTableApi,
+): UseInertifyTableSortingApi {
+  const table = tableApi ?? useInertifyTableContext();
 
   const sorts = computed(() => table.meta.value.sorts);
   const activeSort = computed(() => table.state.sort);

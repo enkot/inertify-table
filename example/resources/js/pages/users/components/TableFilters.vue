@@ -16,16 +16,16 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import {
-    useHeadlessTableFilters,
-    useHeadlessTableFilterLabels,
-    useHeadlessTableSearchFilter,
+    useInertifyTableFilters,
+    useInertifyTableFilterLabels,
+    useInertifyTableSearchFilter,
     useDraftFilterEditor
 } from "../../../../../../resources/js/index";
 import type { ActiveFilterPill } from "../../../../../../resources/js/index";
 import { useTableContext } from "./tableContext";
 
 const context = useTableContext();
-const tableFilters = useHeadlessTableFilters(context.table);
+const tableFilters = useInertifyTableFilters(context.table);
 
 const {
     items,
@@ -36,7 +36,7 @@ const {
 const {
     ruleLabel,
     summaryLabel,
-} = useHeadlessTableFilterLabels(tableFilters);
+} = useInertifyTableFilterLabels(tableFilters);
 
 const {
     draftFilterKey,
@@ -55,7 +55,7 @@ const {
     applyDraftFilter,
 } = useDraftFilterEditor(tableFilters);
 
-const { searchTerm, searchFilter } = useHeadlessTableSearchFilter(tableFilters, {
+const { searchTerm, searchFilter } = useInertifyTableSearchFilter(tableFilters, {
     preferredKeys: ["name"],
     debounceMs: 300,
 });

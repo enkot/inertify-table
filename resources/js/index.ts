@@ -1,18 +1,18 @@
-export { useHeadlessTable } from "./useHeadlessTable";
-export { useHeadlessTableContext } from "./context";
-export { useHeadlessTableFilters } from "./useHeadlessTableFilters";
-export { useDraftFilterEditor } from "./useHeadlessTableDraftFilterEditor";
-export { useHeadlessTableDraftFilterEditor } from "./useHeadlessTableDraftFilterEditor";
-export { useHeadlessTableFilterLabels } from "./useHeadlessTableFilterLabels";
-export { useHeadlessTableSearchFilter } from "./useHeadlessTableSearchFilter";
-export { useHeadlessTableSorting } from "./useHeadlessTableSorting";
-export { useHeadlessTablePagination } from "./useHeadlessTablePagination";
-export { useHeadlessTableSelection } from "./useHeadlessTableSelection";
+export { useInertifyTable } from "./useInertifyTable";
+export { useInertifyTableContext } from "./context";
+export { useInertifyTableFilters } from "./useInertifyTableFilters";
+export { useDraftFilterEditor } from "./useInertifyTableDraftFilterEditor";
+export { useInertifyTableDraftFilterEditor } from "./useInertifyTableDraftFilterEditor";
+export { useInertifyTableFilterLabels } from "./useInertifyTableFilterLabels";
+export { useInertifyTableSearchFilter } from "./useInertifyTableSearchFilter";
+export { useInertifyTableSorting } from "./useInertifyTableSorting";
+export { useInertifyTablePagination } from "./useInertifyTablePagination";
+export { useInertifyTableSelection } from "./useInertifyTableSelection";
 export type {
   SetFilterOptions,
-  UseHeadlessTableApi,
-  UseHeadlessTableOptions,
-} from "./useHeadlessTable";
+  UseInertifyTableApi,
+  UseInertifyTableOptions,
+} from "./useInertifyTable";
 export type {
   ActiveFilterPill,
   HeadlessFilterRule,
@@ -20,23 +20,23 @@ export type {
   RangeFilterValue,
   SelectOption,
   UiFilter,
-  UseHeadlessTableFiltersApi,
-} from "./useHeadlessTableFilters";
+  UseInertifyTableFiltersApi,
+} from "./useInertifyTableFilters";
 export type {
   UseDraftFilterEditorApi,
-  UseHeadlessTableDraftFilterEditorApi,
-} from "./useHeadlessTableDraftFilterEditor";
-export type { UseHeadlessTableFilterLabelsApi } from "./useHeadlessTableFilterLabels";
+  UseInertifyTableDraftFilterEditorApi,
+} from "./useInertifyTableDraftFilterEditor";
+export type { UseInertifyTableFilterLabelsApi } from "./useInertifyTableFilterLabels";
 export type {
-  UseHeadlessTableSearchFilterApi,
-  UseHeadlessTableSearchFilterOptions,
-} from "./useHeadlessTableSearchFilter";
-export type { UseHeadlessTableSortingApi } from "./useHeadlessTableSorting";
-export type { UseHeadlessTableSelectionApi } from "./useHeadlessTableSelection";
+  UseInertifyTableSearchFilterApi,
+  UseInertifyTableSearchFilterOptions,
+} from "./useInertifyTableSearchFilter";
+export type { UseInertifyTableSortingApi } from "./useInertifyTableSorting";
+export type { UseInertifyTableSelectionApi } from "./useInertifyTableSelection";
 export type {
-  UseHeadlessTablePaginationApi,
-  UseHeadlessTablePaginationOptions,
-} from "./useHeadlessTablePagination";
+  UseInertifyTablePaginationApi,
+  UseInertifyTablePaginationOptions,
+} from "./useInertifyTablePagination";
 export type {
   InertiaRouter,
   Paginator,

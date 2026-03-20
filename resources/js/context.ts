@@ -1,24 +1,24 @@
 import { inject, provide, type InjectionKey } from "vue";
-import type { UseHeadlessTableApi } from "./useHeadlessTable";
+import type { UseInertifyTableApi } from "./useInertifyTable";
 
-const HeadlessTableContextKey: InjectionKey<UseHeadlessTableApi> = Symbol(
+const HeadlessTableContextKey: InjectionKey<UseInertifyTableApi> = Symbol(
   "HeadlessTableContext",
 );
 
-export function provideHeadlessTableContext(api: UseHeadlessTableApi): void {
+export function provideHeadlessTableContext(api: UseInertifyTableApi): void {
   provide(HeadlessTableContextKey, api);
 }
 
-export function tryUseHeadlessTableContext(): UseHeadlessTableApi | null {
+export function tryUseInertifyTableContext(): UseInertifyTableApi | null {
   return inject(HeadlessTableContextKey, null);
 }
 
-export function useHeadlessTableContext(): UseHeadlessTableApi {
-  const context = tryUseHeadlessTableContext();
+export function useInertifyTableContext(): UseInertifyTableApi {
+  const context = tryUseInertifyTableContext();
 
   if (!context) {
     throw new Error(
-      "useHeadlessTableContext must be used inside <HeadlessTableProvider>.",
+      "useInertifyTableContext must be used inside <HeadlessTableProvider>.",
     );
   }
 

@@ -8,24 +8,24 @@ import {
 } from "vue";
 import type {
   UiFilter,
-  UseHeadlessTableFiltersApi,
-} from "./useHeadlessTableFilters";
-import { toOperatorValue, toText } from "./useHeadlessTableFilters";
+  UseInertifyTableFiltersApi,
+} from "./useInertifyTableFilters";
+import { toOperatorValue, toText } from "./useInertifyTableFilters";
 
-export interface UseHeadlessTableSearchFilterOptions {
+export interface UseInertifyTableSearchFilterOptions {
   preferredKeys?: string[];
   debounceMs?: number;
 }
 
-export interface UseHeadlessTableSearchFilterApi {
+export interface UseInertifyTableSearchFilterApi {
   searchTerm: Ref<string>;
   searchFilter: ComputedRef<UiFilter | null>;
 }
 
-export function useHeadlessTableSearchFilter(
-  filters: UseHeadlessTableFiltersApi,
-  options: UseHeadlessTableSearchFilterOptions = {},
-): UseHeadlessTableSearchFilterApi {
+export function useInertifyTableSearchFilter(
+  filters: UseInertifyTableFiltersApi,
+  options: UseInertifyTableSearchFilterOptions = {},
+): UseInertifyTableSearchFilterApi {
   const preferredKeys = options.preferredKeys ?? ["name"];
   const debounceMs = options.debounceMs ?? 300;
 

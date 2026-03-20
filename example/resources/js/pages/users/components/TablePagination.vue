@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useHeadlessTablePagination } from "../../../../../../resources/js/index";
+import { useInertifyTablePagination } from "../../../../../../resources/js/index";
 import { useTableContext } from "./tableContext";
 
 const context = useTableContext();
@@ -25,7 +25,7 @@ const {
     perPage,
     perPageOptions,
     setPerPage,
-} = useHeadlessTablePagination(context.table);
+} = useInertifyTablePagination(context.table);
 </script>
 
 <template>

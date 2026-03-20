@@ -14,7 +14,7 @@ import type {
   TableState,
 } from "./types";
 
-export interface UseHeadlessTableOptions {
+export interface UseInertifyTableOptions {
   url?: string;
   router?: InertiaRouter;
   only?: string[];
@@ -30,7 +30,7 @@ export interface SetFilterOptions {
   submit?: boolean;
 }
 
-export interface UseHeadlessTableApi {
+export interface UseInertifyTableApi {
   state: TableState;
   meta: ComputedRef<TableMeta>;
   query: ComputedRef<Record<string, unknown>>;
@@ -62,10 +62,10 @@ export interface UseHeadlessTableApi {
   toggleAllRowsSelected: (rowKeys: unknown[], selected?: boolean) => void;
 }
 
-export function useHeadlessTable(
+export function useInertifyTable(
   tableMeta: MaybeRef<TableMeta>,
-  options: UseHeadlessTableOptions = {},
-): UseHeadlessTableApi {
+  options: UseInertifyTableOptions = {},
+): UseInertifyTableApi {
   const meta = computed(() => unref(tableMeta));
 
   const state = reactive<TableState>({

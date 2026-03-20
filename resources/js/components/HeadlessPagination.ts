@@ -4,11 +4,11 @@ import {
   toRef,
   type PropType,
 } from "vue";
-import { useHeadlessTable, type UseHeadlessTableOptions } from "../useHeadlessTable";
+import { useInertifyTable, type UseInertifyTableOptions } from "../useInertifyTable";
 import type { TableMeta } from "../types";
 
-type RouterOption = UseHeadlessTableOptions["router"];
-type TransformQueryOption = UseHeadlessTableOptions["transformQuery"];
+type RouterOption = UseInertifyTableOptions["router"];
+type TransformQueryOption = UseInertifyTableOptions["transformQuery"];
 
 export default defineComponent({
   name: "HeadlessPagination",
@@ -63,7 +63,7 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const api = useHeadlessTable(toRef(props, "meta"), {
+    const api = useInertifyTable(toRef(props, "meta"), {
       url: props.url,
       router: props.router,
       only: props.only,

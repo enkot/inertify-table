@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
-import { useHeadlessTableContext } from "../context";
-import { useHeadlessTablePagination } from "../useHeadlessTablePagination";
+import { useInertifyTableContext } from "../context";
+import { useInertifyTablePagination } from "../useInertifyTablePagination";
 
 export default defineComponent({
   name: "HeadlessTablePagination",
@@ -11,8 +11,8 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const table = useHeadlessTableContext();
-    const pagination = useHeadlessTablePagination(table, {
+    const table = useInertifyTableContext();
+    const pagination = useInertifyTablePagination(table, {
       window: props.window,
     });
 

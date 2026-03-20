@@ -1,6 +1,6 @@
 import { computed, type ComputedRef } from "vue";
-import { useHeadlessTableContext } from "./context";
-import type { UseHeadlessTableApi } from "./useHeadlessTable";
+import { useInertifyTableContext } from "./context";
+import type { UseInertifyTableApi } from "./useInertifyTable";
 import type { TableFilter } from "./types";
 
 export type HeadlessFilterRule =
@@ -38,7 +38,7 @@ export interface ActiveFilterPill {
   value: unknown;
 }
 
-export interface UseHeadlessTableFiltersApi {
+export interface UseInertifyTableFiltersApi {
   filters: ComputedRef<TableFilter[]>;
   items: ComputedRef<UiFilter[]>;
   active: ComputedRef<ActiveFilterPill[]>;
@@ -49,10 +49,10 @@ export interface UseHeadlessTableFiltersApi {
   reset: () => void;
 }
 
-export function useHeadlessTableFilters(
-  tableApi?: UseHeadlessTableApi,
-): UseHeadlessTableFiltersApi {
-  const table = tableApi ?? useHeadlessTableContext();
+export function useInertifyTableFilters(
+  tableApi?: UseInertifyTableApi,
+): UseInertifyTableFiltersApi {
+  const table = tableApi ?? useInertifyTableContext();
 
   const filters = computed(() => table.meta.value.filters);
   const items = computed(() => buildUiFilters(filters.value));

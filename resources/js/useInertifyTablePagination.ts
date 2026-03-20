@@ -1,8 +1,8 @@
 import { computed, type ComputedRef } from "vue";
-import { useHeadlessTableContext } from "./context";
-import type { UseHeadlessTableApi } from "./useHeadlessTable";
+import { useInertifyTableContext } from "./context";
+import type { UseInertifyTableApi } from "./useInertifyTable";
 
-export interface UseHeadlessTablePaginationApi {
+export interface UseInertifyTablePaginationApi {
   page: ComputedRef<number>;
   lastPage: ComputedRef<number>;
   hasPrevious: ComputedRef<boolean>;
@@ -16,17 +16,17 @@ export interface UseHeadlessTablePaginationApi {
   next: () => void;
 }
 
-export interface UseHeadlessTablePaginationOptions {
+export interface UseInertifyTablePaginationOptions {
   window?: number;
 }
 
-export function useHeadlessTablePagination(
-  tableOrOptions?: UseHeadlessTableApi | UseHeadlessTablePaginationOptions,
-  options: UseHeadlessTablePaginationOptions = {},
-): UseHeadlessTablePaginationApi {
+export function useInertifyTablePagination(
+  tableOrOptions?: UseInertifyTableApi | UseInertifyTablePaginationOptions,
+  options: UseInertifyTablePaginationOptions = {},
+): UseInertifyTablePaginationApi {
   const table = isTableApi(tableOrOptions)
     ? tableOrOptions
-    : useHeadlessTableContext();
+    : useInertifyTableContext();
   const resolvedOptions = isTableApi(tableOrOptions)
     ? options
     : (tableOrOptions ?? {});
@@ -86,7 +86,7 @@ export function useHeadlessTablePagination(
   };
 }
 
-function isTableApi(value: unknown): value is UseHeadlessTableApi {
+function isTableApi(value: unknown): value is UseInertifyTableApi {
   return (
     typeof value === "object" &&
     value !== null &&

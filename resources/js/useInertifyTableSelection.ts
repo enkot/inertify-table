@@ -1,8 +1,8 @@
 import { computed, type ComputedRef } from "vue";
-import { useHeadlessTableContext } from "./context";
-import type { UseHeadlessTableApi } from "./useHeadlessTable";
+import { useInertifyTableContext } from "./context";
+import type { UseInertifyTableApi } from "./useInertifyTable";
 
-export interface UseHeadlessTableSelectionApi {
+export interface UseInertifyTableSelectionApi {
   selectedRows: ComputedRef<string[]>;
   selectionCount: ComputedRef<number>;
   isRowSelected: (rowKey: unknown) => boolean;
@@ -15,10 +15,10 @@ export interface UseHeadlessTableSelectionApi {
   toggleAllRowsSelected: (rowKeys: unknown[], selected?: boolean) => void;
 }
 
-export function useHeadlessTableSelection(
-  tableApi?: UseHeadlessTableApi,
-): UseHeadlessTableSelectionApi {
-  const table = tableApi ?? useHeadlessTableContext();
+export function useInertifyTableSelection(
+  tableApi?: UseInertifyTableApi,
+): UseInertifyTableSelectionApi {
+  const table = tableApi ?? useInertifyTableContext();
 
   return {
     selectedRows: computed(() => table.selectedRows.value),
