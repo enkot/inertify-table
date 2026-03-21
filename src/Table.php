@@ -144,11 +144,36 @@ class Table
     }
 
     /**
-     * @param array<int, AllowedFilter|string> $filters
+     * @param array<int, AllowedFilter|Filter|string> $filters
      */
     public function allowedFilters(array $filters): self
     {
-        $this->spatieFilters = $filters;
+        $resolvedFilters = [];
+
+        foreach ($filters as $filter) {
+            if (is_string($filter)) {
+                $column = $this->columns[$filter] ?? null;
+                $type = $column->meta['type'] ?? 'string';
+
+                if (in_array($type, ['number', 'int', 'float', 'decimal'], true)) {
+                    $filter = Filter::numberRange($filter);
+                } elseif (in_array($type, ['date', 'datetime', 'timestamp'], true)) {
+                    $filter = Filter::dateRange($filter);
+                } elseif (in_array($type, ['boolean', 'bool'], true)) {
+                    $filter = Filter::exact($filter);
+                } else {
+                    $filter = Filter::partial($filter);
+                }
+            }
+
+            if ($filter instanceof Filter) {
+                $resolvedFilters[] = AllowedFilter::custom($filter->key, $filter, $filter->column);
+            } else {
+                $resolvedFilters[] = $filter;
+            }
+        }
+
+        $this->spatieFilters = $resolvedFilters;
 
         return $this;
     }
