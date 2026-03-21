@@ -80,11 +80,11 @@ use Inertia\Inertia;
 use App\Models\User;
 use Inertify\Table\Column;
 use Inertify\Table\Filter;
-use Inertify\Table\InertifyTable;
+use Inertify\\Table\\Table;
 
 public function index()
 {
-    $table = InertifyTable::make('users')
+    $table = Table::make('users')
         ->columns([
         Column::make('name')->sortable()->filterable(),
         Column::make('email')->sortable()->filterable(),
@@ -123,7 +123,7 @@ Use explicit `Filter::...` entries in `allowedFilters([...])` when you need cust
 Before (explicit filters everywhere):
 
 ```php
-$table = InertifyTable::make('users')
+$table = Table::make('users')
   ->columns([
     Column::make('id', 'ID'),
     Column::make('name', 'Name'),
@@ -139,7 +139,7 @@ $table = InertifyTable::make('users')
 After (inferred defaults):
 
 ```php
-$table = InertifyTable::make('users')
+$table = Table::make('users')
   ->columns([
     Column::make('id', 'ID')->type('number'),
     Column::make('name', 'Name'),

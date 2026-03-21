@@ -37,10 +37,10 @@ class TableTest extends TestCase
         $meta = $table->meta($request);
 
         $this->assertEquals('users', $meta['name']);
-        
+
         $this->assertArrayHasKey('queryKeys', $meta);
         $this->assertEquals('users_filters', $meta['queryKeys']['filters']);
-        
+
         $this->assertArrayHasKey('state', $meta);
         $this->assertEquals('admin', $meta['state']['filters']['role']);
         $this->assertEquals('name', $meta['state']['sort']);
@@ -48,7 +48,7 @@ class TableTest extends TestCase
 
         $this->assertArrayHasKey('columns', $meta);
         $this->assertCount(2, $meta['columns']);
-        
+
         $this->assertArrayHasKey('filters', $meta);
         $this->assertCount(2, $meta['filters']);
         $this->assertEquals('admin', $meta['filters'][1]['value']);
@@ -63,13 +63,13 @@ class TableTest extends TestCase
     public function test_it_formats_options_correctly(): void
     {
         $table = Table::make('users')->selectFilter('role', ['admin', 'user']);
-        
+
         $meta = $table->meta();
         $options = $meta['filters'][0]['options'];
-        
+
         $this->assertEquals('admin', $options[0]['value']);
         $this->assertEquals('Admin', $options[0]['label']);
-        
+
         $this->assertEquals('user', $options[1]['value']);
         $this->assertEquals('User', $options[1]['label']);
     }

@@ -205,7 +205,7 @@ class Table
         $spatieRequest = Request::create($request->fullUrl());
         $spatieRequest->query->set('filter', $request->query($keys['filters'], []));
         $spatieRequest->query->set('sort', $request->query($keys['sort'], ''));
-        
+
         return QueryBuilderRequest::fromRequest($spatieRequest);
     }
 
@@ -336,7 +336,7 @@ class Table
         $sorts = [];
         foreach ($this->spatieSorts as $spatieSort) {
             $sortName = $spatieSort instanceof AllowedSort ? $spatieSort->getName() : $spatieSort;
-            
+
             // Format for frontend
             $sorts[] = [
                 'key' => $sortName,
