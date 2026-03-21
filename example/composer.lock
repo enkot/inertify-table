@@ -1237,14 +1237,15 @@
             "dist": {
                 "type": "path",
                 "url": "..",
-                "reference": "50683a61759cf39bb1aa4e4962dda2ff06ad14e6"
+                "reference": "3ae483d8320becb182cc5dc24b1c67aba21bc584"
             },
             "require": {
                 "illuminate/database": "^10.0|^11.0|^12.0",
                 "illuminate/http": "^10.0|^11.0|^12.0",
                 "illuminate/support": "^10.0|^11.0|^12.0",
                 "inertiajs/inertia-laravel": "^2.0",
-                "php": "^8.2"
+                "php": "^8.2",
+                "spatie/laravel-query-builder": "^7.0"
             },
             "require-dev": {
                 "orchestra/testbench": "^8.0|^9.0|^10.0",
@@ -1254,7 +1255,7 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Inertify\\Table\\HeadlessTableServiceProvider"
+                        "Inertify\\Table\\TableServiceProvider"
                     ]
                 }
             },
