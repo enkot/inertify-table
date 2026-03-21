@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace Inertify\Table;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as BaseBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\AllowedSort;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\QueryBuilderRequest;
 use Inertify\Table\Support\TableState;
 
 class Table
@@ -16,11 +22,14 @@ class Table
     /** @var array<string, Column> */
     private array $columns = [];
 
-    /** @var array<string, Filter> */
-    private array $filters = [];
+    /** @var array<string, array> */
+    private array $uiFilters = [];
 
-    /** @var array<string, Sort> */
-    private array $sorts = [];
+    /** @var array<int, AllowedFilter|string> */
+    private array $spatieFilters = [];
+
+    /** @var array<int, AllowedSort|string> */
+    private array $spatieSorts = [];
 
     private ?string $defaultSort = null;
 
@@ -71,52 +80,85 @@ class Table
         return $this;
     }
 
-    public function filter(Filter|string $filter): self
+    public function searchInput(string $key, ?string $label = null, mixed $defaultValue = null): self
     {
-        if (is_string($filter)) {
-            $filter = $this->inferFilterFromColumn($filter);
-        }
+        $this->uiFilters[$key] = [
+            'key' => $key,
+            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
+            'column' => $key,
+            'input' => 'text',
+            'multiple' => false,
+            'options' => [],
+            'default' => $defaultValue,
+        ];
 
-        $this->filters[$filter->key] = $filter;
+        return $this;
+    }
+
+    public function selectFilter(string $key, array $options, ?string $label = null, mixed $defaultValue = null, bool $multiple = false): self
+    {
+        $this->uiFilters[$key] = [
+            'key' => $key,
+            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
+            'column' => $key,
+            'input' => 'select',
+            'multiple' => $multiple,
+            'options' => $this->formatOptions($options),
+            'default' => $defaultValue,
+        ];
+
+        return $this;
+    }
+
+    public function dateRangeFilter(string $key, ?string $label = null, mixed $defaultValue = null): self
+    {
+        $this->uiFilters[$key] = [
+            'key' => $key,
+            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
+            'column' => $key,
+            'input' => 'date-range',
+            'multiple' => false,
+            'options' => [],
+            'default' => $defaultValue,
+        ];
+
+        return $this;
+    }
+
+    public function numberRangeFilter(string $key, ?string $label = null, mixed $defaultValue = null, $min = null, $max = null, $step = null): self
+    {
+        $this->uiFilters[$key] = [
+            'key' => $key,
+            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
+            'column' => $key,
+            'input' => 'number-range',
+            'multiple' => false,
+            'options' => [],
+            'default' => $defaultValue,
+            'rangeMin' => $min,
+            'rangeMax' => $max,
+            'rangeStep' => $step,
+        ];
 
         return $this;
     }
 
     /**
-     * @param array<int, Filter|string> $filters
+     * @param array<int, AllowedFilter|string> $filters
      */
     public function allowedFilters(array $filters): self
     {
-        $this->filters = [];
-
-        foreach ($filters as $filter) {
-            $this->filter($filter);
-        }
-
-        return $this;
-    }
-
-    public function sort(Sort|string $sort): self
-    {
-        if (is_string($sort)) {
-            $sort = Sort::make($sort);
-        }
-
-        $this->sorts[$sort->key] = $sort;
+        $this->spatieFilters = $filters;
 
         return $this;
     }
 
     /**
-     * @param array<int, Sort|string> $sorts
+     * @param array<int, AllowedSort|string> $sorts
      */
     public function allowedSorts(array $sorts): self
     {
-        $this->sorts = [];
-
-        foreach ($sorts as $sort) {
-            $this->sort($sort);
-        }
+        $this->spatieSorts = $sorts;
 
         return $this;
     }
@@ -154,51 +196,72 @@ class Table
         return $this;
     }
 
-    /**
-     * @param EloquentBuilder|BaseBuilder $query
-     */
-    public function apply(EloquentBuilder|BaseBuilder $query, ?Request $request = null): EloquentBuilder|BaseBuilder
+    private function makeSpatieRequest(?Request $request): QueryBuilderRequest
     {
-        $state = $this->state($request);
+        $request = $request ?? request();
+        $keys = $this->queryKeys();
 
-        foreach ($this->filters as $key => $filter) {
-            if (!array_key_exists($key, $state->filters)) {
-                continue;
-            }
-
-            $filter->apply($query, $state->filters[$key]);
-        }
-
-        if ($state->sort && isset($this->sorts[$state->sort]) && $state->direction) {
-            $this->sorts[$state->sort]->apply($query, $state->direction);
-        }
-
-        return $query;
+        // Create a fake request for Spatie so we can support prefixed keys mapped to Spatie's global keys
+        $spatieRequest = Request::create($request->fullUrl());
+        $spatieRequest->query->set('filter', $request->query($keys['filters'], []));
+        $spatieRequest->query->set('sort', $request->query($keys['sort'], ''));
+        
+        return QueryBuilderRequest::fromRequest($spatieRequest);
     }
 
     /**
-     * @param EloquentBuilder|BaseBuilder $query
+     * @param EloquentBuilder|BaseBuilder|Relation|QueryBuilder|string $query
+     */
+    public function apply($query, ?Request $request = null): QueryBuilder
+    {
+        if ($query instanceof QueryBuilder) {
+            return $query;
+        }
+
+        $spatieRequest = $this->makeSpatieRequest($request);
+
+        $builder = QueryBuilder::for($query, $spatieRequest)
+            ->allowedFilters(...$this->spatieFilters)
+            ->allowedSorts(...$this->spatieSorts);
+
+        if ($this->defaultSort !== null) {
+            $builder->defaultSort($this->defaultSort);
+        }
+
+        return $builder;
+    }
+
+    /**
+     * @param EloquentBuilder|BaseBuilder|Relation|QueryBuilder|string $query
      * @param array<int, string> $columns
      */
     public function paginate(
-        EloquentBuilder|BaseBuilder $query,
+        $query,
         ?Request $request = null,
         array $columns = ['*']
     ): LengthAwarePaginator {
-        $state = $this->state($request);
-        $this->apply($query, $request);
+        $builder = $this->apply($query, $request);
+        $request = $request ?? request();
+        $keys = $this->queryKeys();
 
-        return $query
-            ->paginate($state->perPage, $columns, $this->queryKeys()['page'], $state->page)
+        $page = max((int) $request->query($keys['page'], 1), 1);
+        $perPage = max((int) $request->query($keys['perPage'], $this->defaultPerPage), 1);
+
+        if ($this->perPageOptions !== [] && !in_array($perPage, $this->perPageOptions, true)) {
+            $perPage = $this->defaultPerPage;
+        }
+
+        return $builder
+            ->paginate($perPage, $columns, $keys['page'], $page)
             ->withQueryString();
     }
 
     /**
-     * @param EloquentBuilder|BaseBuilder $query
+     * @param EloquentBuilder|BaseBuilder|Relation|QueryBuilder|string $query
      * @param array<int, string> $columns
      */
     public function payload(
-        EloquentBuilder|BaseBuilder $query,
+        $query,
         ?Request $request = null,
         array $columns = ['*'],
         string $rowsKey = 'rows',
@@ -224,14 +287,16 @@ class Table
             $perPage = $this->defaultPerPage;
         }
 
-        [$sort, $direction] = $this->resolveSort((string) $request->query($keys['sort'], ''));
-
-        if ($sort === null && $this->defaultSort !== null) {
-            [$sort, $direction] = $this->resolveSort($this->defaultSort);
+        $sort = (string) $request->query($keys['sort'], '');
+        if ($sort === '' && $this->defaultSort !== null) {
+            $sort = $this->defaultSort;
         }
 
-        if ($sort !== null && !isset($this->sorts[$sort])) {
-            $sort = null;
+        if ($sort !== '') {
+            $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
+            $sortKey = ltrim($sort, '-');
+        } else {
+            $sortKey = null;
             $direction = null;
         }
 
@@ -239,21 +304,21 @@ class Table
         $inputFilters = is_array($rawFilters) ? $rawFilters : [];
 
         $filters = [];
-        foreach ($this->filters as $key => $filter) {
+        foreach ($this->uiFilters as $key => $filter) {
             if (array_key_exists($key, $inputFilters)) {
                 $filters[$key] = $inputFilters[$key];
                 continue;
             }
 
-            if ($filter->default !== null) {
-                $filters[$key] = $filter->default;
+            if ($filter['default'] !== null) {
+                $filters[$key] = $filter['default'];
             }
         }
 
         return new TableState(
             page: $page,
             perPage: $perPage,
-            sort: $sort,
+            sort: $sortKey,
             direction: $direction,
             filters: $filters
         );
@@ -265,20 +330,26 @@ class Table
 
         $columns = array_map(function (Column $column): array {
             $columnArray = $column->toArray();
-            $columnArray['sortable'] = $column->sortable || isset($this->sorts[$column->key]);
-            $columnArray['filterable'] = $column->filterable || isset($this->filters[$column->key]);
-
             return $columnArray;
-        }, array_values($this->columnsForMeta()));
+        }, array_values($this->columns));
 
         $sorts = [];
-        foreach ($this->sorts as $sort) {
-            $sorts[] = $sort->toArray($state->sort === $sort->key ? $state->direction : null);
+        foreach ($this->spatieSorts as $spatieSort) {
+            $sortName = $spatieSort instanceof AllowedSort ? $spatieSort->getName() : $spatieSort;
+            
+            // Format for frontend
+            $sorts[] = [
+                'key' => $sortName,
+                'label' => Str::headline(str_replace('.', ' ', $sortName)),
+                'column' => $sortName,
+                'direction' => $state->sort === $sortName ? $state->direction : null,
+            ];
         }
 
         $filters = [];
-        foreach ($this->filters as $filter) {
-            $filters[] = $filter->toArray(Arr::get($state->filters, $filter->key));
+        foreach ($this->uiFilters as $key => $filter) {
+            $filter['value'] = Arr::get($state->filters, $key);
+            $filters[] = $filter;
         }
 
         return [
@@ -304,23 +375,6 @@ class Table
     }
 
     /**
-     * @return array<string, Column>
-     */
-    private function columnsForMeta(): array
-    {
-        if ($this->columns !== []) {
-            return $this->columns;
-        }
-
-        $columns = [];
-        foreach (array_keys($this->sorts + $this->filters) as $key) {
-            $columns[$key] = Column::make($key);
-        }
-
-        return $columns;
-    }
-
-    /**
      * @return array{page: string, perPage: string, sort: string, filters: string}
      */
     public function queryKeys(): array
@@ -333,50 +387,23 @@ class Table
         ];
     }
 
-    /**
-     * @return array{0: ?string, 1: ?string}
-     */
-    private function resolveSort(string $sortInput): array
+    private function formatOptions(array $options): array
     {
-        $sortInput = trim($sortInput);
-        if ($sortInput === '') {
-            return [null, null];
+        $formatted = [];
+        foreach ($options as $key => $value) {
+            if (is_array($value) && isset($value['value'], $value['label'])) {
+                $formatted[] = $value;
+                continue;
+            }
+
+            // Indexed arrays defaults to value=label
+            if (is_int($key)) {
+                $formatted[] = ['value' => $value, 'label' => Str::headline((string)$value)];
+            } else {
+                $formatted[] = ['value' => $key, 'label' => $value];
+            }
         }
 
-        if (str_starts_with($sortInput, '-')) {
-            $sort = ltrim($sortInput, '-');
-
-            return [$sort !== '' ? $sort : null, $sort !== '' ? 'desc' : null];
-        }
-
-        return [$sortInput, 'asc'];
-    }
-
-    private function inferFilterFromColumn(string $key): Filter
-    {
-        $column = $this->columns[$key] ?? null;
-
-        if (!$column) {
-            return Filter::partial($key);
-        }
-
-        $rawType = $column->meta['type'] ?? null;
-
-        if (!is_string($rawType)) {
-            return Filter::partial($key, $column->key, $column->label);
-        }
-
-        $type = strtolower(trim($rawType));
-
-        if ($type === '') {
-            return Filter::partial($key, $column->key, $column->label);
-        }
-
-        return match ($type) {
-            'number', 'numeric', 'int', 'integer', 'float', 'double', 'decimal' => Filter::numberRange($key, $column->key, $column->label),
-            'date', 'datetime', 'timestamp' => Filter::dateRange($key, $column->key, $column->label),
-            'boolean', 'bool' => Filter::exact($key, $column->key, $column->label),
-            default => Filter::partial($key, $column->key, $column->label),
-        };
+        return $formatted;
     }
 }

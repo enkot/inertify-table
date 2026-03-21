@@ -24,6 +24,9 @@ class UserIndexController extends Controller
             ])
             ->allowedSorts(['name', 'email', 'role', 'created_at'])
             ->allowedFilters(['id', 'name', 'email', 'role', 'created_at'])
+            ->searchInput('name', 'Name')
+            ->searchInput('email', 'Email')
+            ->selectFilter('role', ['admin' => 'Admin', 'user' => 'User'])
             ->defaultSort('-created_at')
             ->defaultPerPage(10)
             ->perPageOptions([10, 25, 50]);
