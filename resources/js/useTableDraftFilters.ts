@@ -59,11 +59,11 @@ export function useDraftFilterEditor(
       return ["is"];
     }
 
-    if (draftFilter.value.control === "text") {
+    if (draftFilter.value.input === "text") {
       return ["is", "is_not", "contains", "has_any_value"];
     }
 
-    if (draftFilter.value.control === "select") {
+    if (draftFilter.value.input === "select") {
       return ["is", "is_not", "has_any_value"];
     }
 
@@ -137,7 +137,7 @@ export function useDraftFilterEditor(
     const normalized = toOperatorValue(current, filter);
     draftRule.value = normalized.operator;
 
-    if (filter.control === "text") {
+    if (filter.input === "text") {
       draftTextValue.value = toText(normalized.value);
       draftSelectValue.value = "";
       draftRangeFrom.value = "";
@@ -146,7 +146,7 @@ export function useDraftFilterEditor(
       return;
     }
 
-    if (filter.control === "select") {
+    if (filter.input === "select") {
       draftSelectValue.value =
         normalized.value == null ? "" : String(normalized.value);
       draftTextValue.value = "";
@@ -171,7 +171,7 @@ export function useDraftFilterEditor(
       return;
     }
 
-    if (filter.control === "text") {
+    if (filter.input === "text") {
       filters.set(
         filter.key,
         {
@@ -180,7 +180,7 @@ export function useDraftFilterEditor(
         },
         false,
       );
-    } else if (filter.control === "select") {
+    } else if (filter.input === "select") {
       filters.set(
         filter.key,
         {

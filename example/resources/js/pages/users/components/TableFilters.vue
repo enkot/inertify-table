@@ -133,10 +133,10 @@ function cancelDraftFilter(): void {
 
                         <div v-if="draftRule !== 'has_any_value'" class="space-y-2">
                             <p class="text-xs text-muted-foreground">Value</p>
-                            <Input v-if="draftFilter.control === 'text'" v-model="draftTextValue"
+                            <Input v-if="draftFilter.input === 'text'" v-model="draftTextValue"
                                 :placeholder="`Enter ${draftFilter.label.toLowerCase()}`" />
 
-                            <Select v-else-if="draftFilter.control === 'select'" v-model="draftSelectValue">
+                            <Select v-else-if="draftFilter.input === 'select'" v-model="draftSelectValue">
                                 <SelectTrigger>
                                     <SelectValue :placeholder="`Select ${draftFilter.label.toLowerCase()}`" />
                                 </SelectTrigger>
@@ -149,17 +149,17 @@ function cancelDraftFilter(): void {
                             </Select>
 
                             <Input v-else-if="draftRule === 'greater_than'"
-                                :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                 v-model="draftRangeFrom" placeholder="Value" />
 
                             <Input v-else-if="draftRule === 'less_than'"
-                                :type="draftFilter.control === 'date-range' ? 'date' : 'number'" v-model="draftRangeTo"
+                                :type="draftFilter.input === 'date-range' ? 'date' : 'number'" v-model="draftRangeTo"
                                 placeholder="Value" />
 
                             <div v-else class="grid grid-cols-2 gap-2">
-                                <Input :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                <Input :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                     v-model="draftRangeFrom" placeholder="From" />
-                                <Input :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                <Input :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                     v-model="draftRangeTo" placeholder="To" />
                             </div>
                         </div>
@@ -209,10 +209,10 @@ function cancelDraftFilter(): void {
 
                                 <div v-if="draftRule !== 'has_any_value'" class="space-y-2">
                                     <p class="text-xs text-muted-foreground">Value</p>
-                                    <Input v-if="draftFilter.control === 'text'" v-model="draftTextValue"
+                                    <Input v-if="draftFilter.input === 'text'" v-model="draftTextValue"
                                         :placeholder="`Enter ${draftFilter.label.toLowerCase()}`" />
 
-                                    <Select v-else-if="draftFilter.control === 'select'" v-model="draftSelectValue">
+                                    <Select v-else-if="draftFilter.input === 'select'" v-model="draftSelectValue">
                                         <SelectTrigger>
                                             <SelectValue :placeholder="`Select ${draftFilter.label.toLowerCase()}`" />
                                         </SelectTrigger>
@@ -226,17 +226,17 @@ function cancelDraftFilter(): void {
                                     </Select>
 
                                     <Input v-else-if="draftRule === 'greater_than'"
-                                        :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                        :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                         v-model="draftRangeFrom" placeholder="Value" />
 
                                     <Input v-else-if="draftRule === 'less_than'"
-                                        :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                        :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                         v-model="draftRangeTo" placeholder="Value" />
 
                                     <div v-else class="grid grid-cols-2 gap-2">
-                                        <Input :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                        <Input :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                             v-model="draftRangeFrom" placeholder="From" />
-                                        <Input :type="draftFilter.control === 'date-range' ? 'date' : 'number'"
+                                        <Input :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
                                             v-model="draftRangeTo" placeholder="To" />
                                     </div>
                                 </div>

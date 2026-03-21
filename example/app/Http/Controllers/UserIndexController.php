@@ -19,14 +19,13 @@ class UserIndexController extends Controller
                 Column::make('id', 'ID')->type('number')->filterable(),
                 Column::make('name', 'Name')->sortable()->filterable(),
                 Column::make('email', 'Email')->sortable()->filterable(),
-                Column::make('role', 'Role')->sortable()->filterable(),
                 Column::make('created_at', 'Created')->type('date')->sortable()->filterable(),
             ])
-            ->allowedSorts(['name', 'email', 'role', 'created_at'])
-            ->allowedFilters(['id', 'name', 'email', 'role', 'created_at'])
+            ->allowedSorts(['name', 'email', 'created_at'])
+            ->allowedFilters(['id', 'name', 'email', 'created_at'])
             ->searchInput('name', 'Name')
             ->searchInput('email', 'Email')
-            ->selectFilter('role', ['admin' => 'Admin', 'user' => 'User'])
+            ->dateRangeFilter('created_at', 'Created At')
             ->defaultSort('-created_at')
             ->defaultPerPage(10)
             ->perPageOptions([10, 25, 50]);
@@ -36,7 +35,6 @@ class UserIndexController extends Controller
                 'id',
                 'name',
                 'email',
-                'role',
                 'created_at',
             ]),
             rowsKey: 'rows',
