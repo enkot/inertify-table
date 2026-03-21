@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\ResponseFactory;
 
-class HeadlessTableServiceProvider extends ServiceProvider
+class TableServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Inertify\\Table\\HeadlessTableServiceProvider"
+        "Inertify\\Table\\TableServiceProvider"
       ]
     }
   },

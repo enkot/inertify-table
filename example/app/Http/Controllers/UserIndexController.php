@@ -8,7 +8,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inertify\Table\Column;
-use Inertify\\Table\\Table;
+use Inertify\Table\Table;
 
 class UserIndexController extends Controller
 {

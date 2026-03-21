@@ -80,7 +80,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use Inertify\Table\Column;
 use Inertify\Table\Filter;
-use Inertify\\Table\\Table;
+use Inertify\Table\Table;
 
 public function index()
 {

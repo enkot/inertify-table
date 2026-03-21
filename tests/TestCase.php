@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Inertify\Table\Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
-use Inertify\Table\HeadlessTableServiceProvider;
+use Inertify\Table\TableServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
     protected function getPackageProviders($app): array
     {
         return [
-            HeadlessTableServiceProvider::class,
+            TableServiceProvider::class,
         ];
     }
 
