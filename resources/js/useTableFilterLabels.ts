@@ -1,22 +1,22 @@
 import type {
   HeadlessFilterRule,
   UiFilter,
-  UseInertifyTableFiltersApi,
-} from "./useInertifyTableFilters";
+  UseTableFiltersApi,
+} from "./useTableFilters";
 import {
   toOperatorValue,
   toRangeValue,
   toText,
-} from "./useInertifyTableFilters";
+} from "./useTableFilters";
 
-export interface UseInertifyTableFilterLabelsApi {
+export interface UseTableFilterLabelsApi {
   ruleLabel: (rule: HeadlessFilterRule, filter: UiFilter | null) => string;
   summaryLabel: (filter: UiFilter, current: unknown) => string;
 }
 
-export function useInertifyTableFilterLabels(
-  _filters: UseInertifyTableFiltersApi,
-): UseInertifyTableFilterLabelsApi {
+export function useTableFilterLabels(
+  _filters: UseTableFiltersApi,
+): UseTableFilterLabelsApi {
   function ruleLabel(
     rule: HeadlessFilterRule,
     filter: UiFilter | null,

@@ -1,18 +1,18 @@
-export { useInertifyTable } from "./useInertifyTable";
-export { useInertifyTableContext } from "./context";
-export { useInertifyTableFilters } from "./useInertifyTableFilters";
-export { useDraftFilterEditor } from "./useInertifyTableDraftFilterEditor";
-export { useInertifyTableDraftFilterEditor } from "./useInertifyTableDraftFilterEditor";
-export { useInertifyTableFilterLabels } from "./useInertifyTableFilterLabels";
-export { useInertifyTableSearchFilter } from "./useInertifyTableSearchFilter";
-export { useInertifyTableSorting } from "./useInertifyTableSorting";
-export { useInertifyTablePagination } from "./useInertifyTablePagination";
-export { useInertifyTableSelection } from "./useInertifyTableSelection";
+export { useTable } from "./useTable";
+export { useTableContext } from "./context";
+export { useTableFilters } from "./useTableFilters";
+export { useDraftFilterEditor } from "./useTableDraftFilterEditor";
+export { useTableDraftFilterEditor } from "./useTableDraftFilterEditor";
+export { useTableFilterLabels } from "./useTableFilterLabels";
+export { useTableSearchFilter } from "./useTableSearchFilter";
+export { useTableSorting } from "./useTableSorting";
+export { useTablePagination } from "./useTablePagination";
+export { useTableSelection } from "./useTableSelection";
 export type {
   SetFilterOptions,
-  UseInertifyTableApi,
-  UseInertifyTableOptions,
-} from "./useInertifyTable";
+  UseTableApi,
+  UseTableOptions,
+} from "./useTable";
 export type {
   ActiveFilterPill,
   HeadlessFilterRule,
@@ -20,23 +20,23 @@ export type {
   RangeFilterValue,
   SelectOption,
   UiFilter,
-  UseInertifyTableFiltersApi,
-} from "./useInertifyTableFilters";
+  UseTableFiltersApi,
+} from "./useTableFilters";
 export type {
   UseDraftFilterEditorApi,
-  UseInertifyTableDraftFilterEditorApi,
-} from "./useInertifyTableDraftFilterEditor";
-export type { UseInertifyTableFilterLabelsApi } from "./useInertifyTableFilterLabels";
+  UseTableDraftFilterEditorApi,
+} from "./useTableDraftFilterEditor";
+export type { UseTableFilterLabelsApi } from "./useTableFilterLabels";
 export type {
-  UseInertifyTableSearchFilterApi,
-  UseInertifyTableSearchFilterOptions,
-} from "./useInertifyTableSearchFilter";
-export type { UseInertifyTableSortingApi } from "./useInertifyTableSorting";
-export type { UseInertifyTableSelectionApi } from "./useInertifyTableSelection";
+  UseTableSearchFilterApi,
+  UseTableSearchFilterOptions,
+} from "./useTableSearchFilter";
+export type { UseTableSortingApi } from "./useTableSorting";
+export type { UseTableSelectionApi } from "./useTableSelection";
 export type {
-  UseInertifyTablePaginationApi,
-  UseInertifyTablePaginationOptions,
-} from "./useInertifyTablePagination";
+  UseTablePaginationApi,
+  UseTablePaginationOptions,
+} from "./useTablePagination";
 export type {
   InertiaRouter,
   Paginator,

@@ -14,7 +14,7 @@ import type {
   TableState,
 } from "./types";
 
-export interface UseInertifyTableOptions {
+export interface UseTableOptions {
   url?: string;
   router?: InertiaRouter;
   only?: string[];
@@ -30,7 +30,7 @@ export interface SetFilterOptions {
   submit?: boolean;
 }
 
-export interface UseInertifyTableApi {
+export interface UseTableApi {
   state: TableState;
   meta: ComputedRef<TableMeta>;
   query: ComputedRef<Record<string, unknown>>;
@@ -62,10 +62,10 @@ export interface UseInertifyTableApi {
   toggleAllRowsSelected: (rowKeys: unknown[], selected?: boolean) => void;
 }
 
-export function useInertifyTable(
+export function useTable(
   tableMeta: MaybeRef<TableMeta>,
-  options: UseInertifyTableOptions = {},
-): UseInertifyTableApi {
+  options: UseTableOptions = {},
+): UseTableApi {
   const meta = computed(() => unref(tableMeta));
 
   const state = reactive<TableState>({

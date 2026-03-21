@@ -1,10 +1,10 @@
 import { inject, provide } from 'vue';
 import type { ComputedRef, InjectionKey } from 'vue';
-import type { UseInertifyTableApi } from '../../../../../../resources/js/index';
+import type { UseTableApi } from '../../../../../../resources/js/index';
 import type { UserRow } from './tableTypes';
 
 export interface TableContext {
-    table: UseInertifyTableApi;
+    table: UseTableApi;
     rows: ComputedRef<UserRow[]>;
     total: ComputedRef<number>;
     from: ComputedRef<number | null>;

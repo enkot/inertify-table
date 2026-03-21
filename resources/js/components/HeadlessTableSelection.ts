@@ -1,12 +1,12 @@
 import { defineComponent } from "vue";
-import { useInertifyTableContext } from "../context";
-import { useInertifyTableSelection } from "../useInertifyTableSelection";
+import { useTableContext } from "../context";
+import { useTableSelection } from "../useTableSelection";
 
 export default defineComponent({
   name: "HeadlessTableSelection",
   setup(_, { slots }) {
-    const table = useInertifyTableContext();
-    const selection = useInertifyTableSelection(table);
+    const table = useTableContext();
+    const selection = useTableSelection(table);
 
     return () =>
       slots.default?.({

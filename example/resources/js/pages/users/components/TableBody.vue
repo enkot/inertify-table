@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
     HeadlessTableCells,
     HeadlessTableHeads,
-    useInertifyTableSelection,
+    useTableSelection,
 } from "../../../../../../resources/js/index";
 import { useTableContext } from "./tableContext";
 import {
@@ -27,7 +27,7 @@ const {
     areSomeRowsSelected,
     toggleAllRowsSelected,
     clearSelection,
-} = useInertifyTableSelection(context.table);
+} = useTableSelection(context.table);
 
 function sortArrow(direction: string | null): string {
     return direction === "asc" ? "^" : "v";

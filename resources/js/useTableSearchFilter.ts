@@ -8,24 +8,24 @@ import {
 } from "vue";
 import type {
   UiFilter,
-  UseInertifyTableFiltersApi,
-} from "./useInertifyTableFilters";
-import { toOperatorValue, toText } from "./useInertifyTableFilters";
+  UseTableFiltersApi,
+} from "./useTableFilters";
+import { toOperatorValue, toText } from "./useTableFilters";
 
-export interface UseInertifyTableSearchFilterOptions {
+export interface UseTableSearchFilterOptions {
   preferredKeys?: string[];
   debounceMs?: number;
 }
 
-export interface UseInertifyTableSearchFilterApi {
+export interface UseTableSearchFilterApi {
   searchTerm: Ref<string>;
   searchFilter: ComputedRef<UiFilter | null>;
 }
 
-export function useInertifyTableSearchFilter(
-  filters: UseInertifyTableFiltersApi,
-  options: UseInertifyTableSearchFilterOptions = {},
-): UseInertifyTableSearchFilterApi {
+export function useTableSearchFilter(
+  filters: UseTableFiltersApi,
+  options: UseTableSearchFilterOptions = {},
+): UseTableSearchFilterApi {
   const preferredKeys = options.preferredKeys ?? ["name"];
   const debounceMs = options.debounceMs ?? 300;
 

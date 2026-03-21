@@ -1,12 +1,12 @@
 import { defineComponent, toRef, type PropType } from "vue";
 import {
-  useInertifyTable,
-  type UseInertifyTableOptions,
-} from "../useInertifyTable";
+  useTable,
+  type UseTableOptions,
+} from "../useTable";
 import type { TableMeta } from "../types";
 
-type RouterOption = UseInertifyTableOptions["router"];
-type TransformQueryOption = UseInertifyTableOptions["transformQuery"];
+type RouterOption = UseTableOptions["router"];
+type TransformQueryOption = UseTableOptions["transformQuery"];
 
 export default defineComponent({
   name: "HeadlessTable",
@@ -57,7 +57,7 @@ export default defineComponent({
     },
   },
   setup(props, { slots }) {
-    const api = useInertifyTable(toRef(props, "meta"), {
+    const api = useTable(toRef(props, "meta"), {
       url: props.url,
       router: props.router,
       only: props.only,

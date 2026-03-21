@@ -1,8 +1,8 @@
 import { computed, type ComputedRef } from "vue";
-import { useInertifyTableContext } from "./context";
-import type { UseInertifyTableApi } from "./useInertifyTable";
+import { useTableContext } from "./context";
+import type { UseTableApi } from "./useTable";
 
-export interface UseInertifyTableSelectionApi {
+export interface UseTableSelectionApi {
   selectedRows: ComputedRef<string[]>;
   selectionCount: ComputedRef<number>;
   isRowSelected: (rowKey: unknown) => boolean;
@@ -15,10 +15,10 @@ export interface UseInertifyTableSelectionApi {
   toggleAllRowsSelected: (rowKeys: unknown[], selected?: boolean) => void;
 }
 
-export function useInertifyTableSelection(
-  tableApi?: UseInertifyTableApi,
-): UseInertifyTableSelectionApi {
-  const table = tableApi ?? useInertifyTableContext();
+export function useTableSelection(
+  tableApi?: UseTableApi,
+): UseTableSelectionApi {
+  const table = tableApi ?? useTableContext();
 
   return {
     selectedRows: computed(() => table.selectedRows.value),

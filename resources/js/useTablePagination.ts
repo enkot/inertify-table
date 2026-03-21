@@ -1,8 +1,8 @@
 import { computed, type ComputedRef } from "vue";
-import { useInertifyTableContext } from "./context";
-import type { UseInertifyTableApi } from "./useInertifyTable";
+import { useTableContext } from "./context";
+import type { UseTableApi } from "./useTable";
 
-export interface UseInertifyTablePaginationApi {
+export interface UseTablePaginationApi {
   page: ComputedRef<number>;
   lastPage: ComputedRef<number>;
   hasPrevious: ComputedRef<boolean>;
@@ -16,17 +16,17 @@ export interface UseInertifyTablePaginationApi {
   next: () => void;
 }
 
-export interface UseInertifyTablePaginationOptions {
+export interface UseTablePaginationOptions {
   window?: number;
 }
 
-export function useInertifyTablePagination(
-  tableOrOptions?: UseInertifyTableApi | UseInertifyTablePaginationOptions,
-  options: UseInertifyTablePaginationOptions = {},
-): UseInertifyTablePaginationApi {
+export function useTablePagination(
+  tableOrOptions?: UseTableApi | UseTablePaginationOptions,
+  options: UseTablePaginationOptions = {},
+): UseTablePaginationApi {
   const table = isTableApi(tableOrOptions)
     ? tableOrOptions
-    : useInertifyTableContext();
+    : useTableContext();
   const resolvedOptions = isTableApi(tableOrOptions)
     ? options
     : (tableOrOptions ?? {});
@@ -86,7 +86,7 @@ export function useInertifyTablePagination(
   };
 }
 
-function isTableApi(value: unknown): value is UseInertifyTableApi {
+function isTableApi(value: unknown): value is UseTableApi {
   return (
     typeof value === "object" &&
     value !== null &&

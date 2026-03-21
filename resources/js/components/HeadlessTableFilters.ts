@@ -1,12 +1,12 @@
 import { defineComponent } from "vue";
-import { useInertifyTableContext } from "../context";
-import { useInertifyTableFilters } from "../useInertifyTableFilters";
+import { useTableContext } from "../context";
+import { useTableFilters } from "../useTableFilters";
 
 export default defineComponent({
   name: "HeadlessTableFilters",
   setup(_, { slots }) {
-    const table = useInertifyTableContext();
-    const filters = useInertifyTableFilters(table);
+    const table = useTableContext();
+    const filters = useTableFilters(table);
 
     return () =>
       slots.default?.({

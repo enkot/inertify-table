@@ -1,9 +1,9 @@
 import { computed, type ComputedRef } from "vue";
-import { useInertifyTableContext } from "./context";
-import type { UseInertifyTableApi } from "./useInertifyTable";
+import { useTableContext } from "./context";
+import type { UseTableApi } from "./useTable";
 import type { SortDirection, TableSort } from "./types";
 
-export interface UseInertifyTableSortingApi {
+export interface UseTableSortingApi {
   sorts: ComputedRef<TableSort[]>;
   activeSort: ComputedRef<string | null>;
   activeDirection: ComputedRef<SortDirection>;
@@ -19,10 +19,10 @@ export interface UseInertifyTableSortingApi {
   ) => boolean;
 }
 
-export function useInertifyTableSorting(
-  tableApi?: UseInertifyTableApi,
-): UseInertifyTableSortingApi {
-  const table = tableApi ?? useInertifyTableContext();
+export function useTableSorting(
+  tableApi?: UseTableApi,
+): UseTableSortingApi {
+  const table = tableApi ?? useTableContext();
 
   const sorts = computed(() => table.meta.value.sorts);
   const activeSort = computed(() => table.state.sort);

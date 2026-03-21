@@ -174,30 +174,30 @@ return Inertia::render('Users/Index', [
 
 ```ts
 import {
-  useInertifyTable,
-  useInertifyTableFilters,
-  useInertifyTableSorting,
-  useInertifyTablePagination,
-  useInertifyTableSelection,
+  useTable,
+  useTableFilters,
+  useTableSorting,
+  useTablePagination,
+  useTableSelection,
 } from "@inertify/table-vue";
 
-const table = useInertifyTable(props.usersTable, {
+const table = useTable(props.usersTable, {
   only: ["users", "usersTable"],
 });
 
-const filters = useInertifyTableFilters(table);
-const sorting = useInertifyTableSorting(table);
-const pagination = useInertifyTablePagination(table);
-const selection = useInertifyTableSelection(table);
+const filters = useTableFilters(table);
+const sorting = useTableSorting(table);
+const pagination = useTablePagination(table);
+const selection = useTableSelection(table);
 ```
 
 Each composable also supports inject fallback when used inside `HeadlessTableProvider`:
 
 ```ts
-const filters = useInertifyTableFilters();
-const sorting = useInertifyTableSorting();
-const pagination = useInertifyTablePagination();
-const selection = useInertifyTableSelection();
+const filters = useTableFilters();
+const sorting = useTableSorting();
+const pagination = useTablePagination();
+const selection = useTableSelection();
 ```
 
 ### Provider/inject (optional)
@@ -238,9 +238,9 @@ defineProps<{ usersTable: any }>();
 ### Direct table API
 
 ```ts
-import { useInertifyTable } from "@inertify/table-vue";
+import { useTable } from "@inertify/table-vue";
 
-const table = useInertifyTable(props.usersTable, {
+const table = useTable(props.usersTable, {
   only: ["users", "usersTable"],
 });
 
