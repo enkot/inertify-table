@@ -1,8 +1,8 @@
 export { useTable } from "./useTable";
 export { useTableContext } from "./context";
 export { useTableFilters } from "./useTableFilters";
-export { useDraftFilterEditor } from "./useTableDraftFilterEditor";
-export { useTableDraftFilterEditor } from "./useTableDraftFilterEditor";
+export { useDraftFilterEditor } from "./useTableDraftFilters";
+export { useTableDraftFilters } from "./useTableDraftFilters";
 export { useTableFilterLabels } from "./useTableFilterLabels";
 export { useTableSearchFilter } from "./useTableSearchFilter";
 export { useTableSorting } from "./useTableSorting";
@@ -24,8 +24,8 @@ export type {
 } from "./useTableFilters";
 export type {
   UseDraftFilterEditorApi,
-  UseTableDraftFilterEditorApi,
-} from "./useTableDraftFilterEditor";
+  useTableDraftFiltersApi,
+} from "./useTableDraftFilters";
 export type { UseTableFilterLabelsApi } from "./useTableFilterLabels";
 export type {
   UseTableSearchFilterApi,

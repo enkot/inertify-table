@@ -224,5 +224,5 @@ export function useDraftFilterEditor(
   };
 }
 
-export const useTableDraftFilterEditor = useDraftFilterEditor;
-export type UseTableDraftFilterEditorApi = UseDraftFilterEditorApi;
+export const useTableDraftFilters = useDraftFilterEditor;
+export type useTableDraftFiltersApi = UseDraftFilterEditorApi;
