@@ -10,6 +10,9 @@ use Illuminate\Database\Query\Builder as BaseBuilder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\Filters\Filter as SpatieFilter;
+use Spatie\QueryBuilder\Filters\FiltersCallback;
+use Spatie\QueryBuilder\Filters\FiltersExact;
+use Spatie\QueryBuilder\Filters\FiltersPartial;
 
 class Filter implements SpatieFilter
 {
@@ -163,7 +166,7 @@ class Filter implements SpatieFilter
         }
 
         if ($this->match === self::MATCH_CALLBACK && $this->callback) {
-            ($this->callback)($query, $value, $this);
+            (new FiltersCallback($this->callback))($query, $value, $this->column);
 
             return;
         }
@@ -393,18 +396,12 @@ class Filter implements SpatieFilter
         }
 
         if ($operator === self::OPERATOR_CONTAINS) {
-            $this->applyLike($query, $operand);
+            (new FiltersPartial())($query, $operand, $this->column);
 
             return;
         }
 
-        if (is_array($operand)) {
-            $query->whereIn($this->column, $operand);
-
-            return;
-        }
-
-        $query->where($this->column, '=', $this->normalize($operand));
+        (new FiltersExact())($query, is_array($operand) ? $operand : $this->normalize($operand), $this->column);
     }
 
     /**
@@ -422,35 +419,24 @@ class Filter implements SpatieFilter
         }
 
         if ($operator === self::OPERATOR_IS) {
-            $query->where($this->column, '=', $this->normalize($operand));
+            (new FiltersExact())($query, is_array($operand) ? $operand : $this->normalize($operand), $this->column);
 
             return;
         }
 
         if ($operator === self::OPERATOR_IS_NOT) {
+            if (is_array($operand)) {
+                $query->whereNotIn($this->column, $operand);
+
+                return;
+            }
+
             $query->where($this->column, '!=', $this->normalize($operand));
 
             return;
         }
 
-        $this->applyLike($query, $operand);
-    }
-
-    /**
-     * @param EloquentBuilder|BaseBuilder $query
-     */
-    private function applyLike(EloquentBuilder|BaseBuilder $query, mixed $operand): void
-    {
-        $normalizedOperand = $this->normalize($operand);
-
-        if (!is_scalar($normalizedOperand)) {
-            return;
-        }
-
-        $normalized = (string) $normalizedOperand;
-        $escaped = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $normalized);
-
-        $query->where($this->column, 'like', '%' . $escaped . '%');
+        (new FiltersPartial())($query, $operand, $this->column);
     }
 
     /**
