@@ -43,7 +43,7 @@ php artisan db:seed --class=UserSeeder
 ## Notes
 
 - The table logic (`pagination`, `sorting`, `filtering`) is fully headless and comes from `useTable`.
-- Filters in `Index.vue` are rendered from `usersTable.filters` metadata (text/select/boolean), so you can add server-side filters without rewriting the page.
+- Filters in `Index.vue` are rendered from `meta.filters` metadata (text/select/boolean), so you can add server-side filters without rewriting the page.
 - The example uses provider/inject composition components: `HeadlessTableProvider`, `HeadlessTableFilters`, `HeadlessTableSorting`, and `HeadlessTablePagination`.
 - All visuals in `Index.vue` are built with shadcn-vue components, so you can redesign freely.
 - The example expects a `users` table with at least: `name`, `email`, `role`, `password`, and timestamps.

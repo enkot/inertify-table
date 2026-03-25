@@ -243,7 +243,7 @@ class Table
         ?Request $request = null,
         array $columns = ['*'],
         string $rowsKey = 'rows',
-        string $metaKey = 'table'
+        string $metaKey = 'meta'
     ): array {
         $paginator = $this->paginate($query, $request, $columns);
 

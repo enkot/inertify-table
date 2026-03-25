@@ -34,8 +34,6 @@ class UserIndexController extends Controller
                 'email',
                 'created_at',
             ]),
-            rowsKey: 'rows',
-            metaKey: 'meta'
         );
 
         return Inertia::render('users/Index', [

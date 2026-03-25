@@ -101,7 +101,7 @@ public function index()
         ...$table->payload(
             query: User::query(),
             rowsKey: 'users',
-            metaKey: 'usersTable'
+            metaKey: 'meta'
         ),
     ]);
 }
@@ -118,38 +118,6 @@ When `allowedFilters([...])` receives a string key, the package infers the filte
 
 Use explicit `Filter::...` entries in `allowedFilters([...])` when you need custom behavior (for example `Filter::select(...)` with options or callback filters).
 
-### Upgrade note: explicit to inferred filters
-
-Before (explicit filters everywhere):
-
-```php
-$table = Table::make('users')
-  ->columns([
-    Column::make('id', 'ID'),
-    Column::make('name', 'Name'),
-    Column::make('created_at', 'Created'),
-  ])
-  ->allowedFilters([
-    Filter::numberRange('id', 'id', 'ID'),
-    Filter::partial('name', 'name', 'Name'),
-    Filter::dateRange('created_at', 'created_at', 'Created'),
-  ]);
-```
-
-After (inferred defaults):
-
-```php
-$table = Table::make('users')
-  ->columns([
-    Column::make('id', 'ID')->type('number'),
-    Column::make('name', 'Name'),
-    Column::make('created_at', 'Created')->type('date'),
-  ])
-  ->allowedFilters(['id', 'name', 'created_at']);
-```
-
-Keep using explicit `Filter::...` when you need custom filter behavior (for example `Filter::select(...)`, custom callback logic, or non-default matching rules).
-
 ### Inertia macro shortcut
 
 The package registers a `Inertia::tablePayload(...)` macro:
@@ -163,7 +131,7 @@ return Inertia::render('Users/Index', [
             ->allowedSorts(['name', 'email'])
             ->allowedFilters([Filter::partial('name')]),
         rowsKey: 'users',
-        metaKey: 'usersTable',
+        metaKey: 'meta',
     ),
 ]);
 ```
@@ -181,8 +149,8 @@ import {
   useTableSelection,
 } from "@inertify/table-vue";
 
-const table = useTable(props.usersTable, {
-  only: ["users", "usersTable"],
+const table = useTable(props.meta, {
+  only: ["users", "meta"],
 });
 
 const filters = useTableFilters(table);
@@ -211,11 +179,11 @@ import {
   HeadlessTablePagination,
 } from "@inertify/table-vue";
 
-defineProps<{ usersTable: any }>();
+defineProps<{ meta: any }>();
 </script>
 
 <template>
-  <HeadlessTableProvider :meta="usersTable" :only="['users', 'usersTable']">
+  <HeadlessTableProvider :meta="meta" :only="['users', 'meta']">
     <HeadlessTableFilters
       v-slot="{ filters, getFilterValue, setFilterValue, applyFilters }"
     >
@@ -240,8 +208,8 @@ defineProps<{ usersTable: any }>();
 ```ts
 import { useTable } from "@inertify/table-vue";
 
-const table = useTable(props.usersTable, {
-  only: ["users", "usersTable"],
+const table = useTable(props.meta, {
+  only: ["users", "meta"],
 });
 
 table.toggleSort("name");
@@ -288,10 +256,7 @@ Column type is resolved from `column.meta.type` first, then inferred from filter
 `HeadlessTable` and `HeadlessPagination` expose slot props only, so you can build any UI design system.
 
 ```vue
-<HeadlessTable
-  :meta="usersTable"
-  v-slot="{ state, toggleSort, setFilter, visit }"
->
+<HeadlessTable :meta="meta" v-slot="{ state, toggleSort, setFilter, visit }">
   <button @click="toggleSort('name')">Sort by name</button>
   <input :value="state.filters.name ?? ''" @input="setFilter('name', $event.target.value, { submit: false })" />
   <button @click="visit()">Apply</button>

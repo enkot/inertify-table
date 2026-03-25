@@ -29,7 +29,7 @@ class TableServiceProvider extends ServiceProvider
             mixed $query,
             callable $configure,
             string $rowsKey = 'rows',
-            string $metaKey = 'table',
+            string $metaKey = 'meta',
             ?Request $request = null,
             array $columns = ['*']
         ): array {
