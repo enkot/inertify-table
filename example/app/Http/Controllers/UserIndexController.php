@@ -23,9 +23,6 @@ class UserIndexController extends Controller
             ])
             ->allowedSorts(['name', 'email', 'created_at'])
             ->allowedFilters(['id', 'name', 'email', 'created_at'])
-            ->searchInput('name', 'Name')
-            ->searchInput('email', 'Email')
-            ->dateRangeFilter('created_at', 'Created At')
             ->defaultSort('-created_at')
             ->defaultPerPage(10)
             ->perPageOptions([10, 25, 50]);

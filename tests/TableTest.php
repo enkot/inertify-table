@@ -6,6 +6,7 @@ namespace Inertify\Table\Tests;
 
 use Illuminate\Http\Request;
 use Inertify\Table\Column;
+use Inertify\Table\Filter;
 use Inertify\Table\Table;
 use Spatie\QueryBuilder\AllowedFilter;
 use Mockery;
@@ -26,10 +27,8 @@ class TableTest extends TestCase
                 Column::make('name', 'Name')->sortable(),
                 Column::make('role', 'Role')->filterable(),
             ])
-            ->searchInput('name', 'Name')
-            ->selectFilter('role', ['admin' => 'Admin', 'user' => 'User'])
             ->allowedFilters([
-                AllowedFilter::exact('role'),
+                Filter::select('role', ['admin' => 'Admin', 'user' => 'User']),
                 'name',
             ])
             ->allowedSorts(['name', 'role']);
@@ -51,8 +50,8 @@ class TableTest extends TestCase
 
         $this->assertArrayHasKey('filters', $meta);
         $this->assertCount(2, $meta['filters']);
-        $this->assertEquals('admin', $meta['filters'][1]['value']);
-        $this->assertEquals('select', $meta['filters'][1]['input']);
+        $this->assertEquals('admin', $meta['filters'][0]['value']);
+        $this->assertEquals('select', $meta['filters'][0]['input']);
 
         $this->assertArrayHasKey('sorts', $meta);
         $this->assertCount(2, $meta['sorts']);
@@ -62,7 +61,7 @@ class TableTest extends TestCase
 
     public function test_it_formats_options_correctly(): void
     {
-        $table = Table::make('users')->selectFilter('role', ['admin', 'user']);
+        $table = Table::make('users')->allowedFilters([Filter::select('role', ['admin', 'user'])]);
 
         $meta = $table->meta();
         $options = $meta['filters'][0]['options'];

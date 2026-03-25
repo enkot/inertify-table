@@ -80,69 +80,6 @@ class Table
         return $this;
     }
 
-    public function searchInput(string $key, ?string $label = null, mixed $defaultValue = null): self
-    {
-        $this->uiFilters[$key] = [
-            'key' => $key,
-            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
-            'column' => $key,
-            'input' => 'text',
-            'multiple' => false,
-            'options' => [],
-            'default' => $defaultValue,
-        ];
-
-        return $this;
-    }
-
-    public function selectFilter(string $key, array $options, ?string $label = null, mixed $defaultValue = null, bool $multiple = false): self
-    {
-        $this->uiFilters[$key] = [
-            'key' => $key,
-            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
-            'column' => $key,
-            'input' => 'select',
-            'multiple' => $multiple,
-            'options' => $this->formatOptions($options),
-            'default' => $defaultValue,
-        ];
-
-        return $this;
-    }
-
-    public function dateRangeFilter(string $key, ?string $label = null, mixed $defaultValue = null): self
-    {
-        $this->uiFilters[$key] = [
-            'key' => $key,
-            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
-            'column' => $key,
-            'input' => 'date-range',
-            'multiple' => false,
-            'options' => [],
-            'default' => $defaultValue,
-        ];
-
-        return $this;
-    }
-
-    public function numberRangeFilter(string $key, ?string $label = null, mixed $defaultValue = null, $min = null, $max = null, $step = null): self
-    {
-        $this->uiFilters[$key] = [
-            'key' => $key,
-            'label' => $label ?? Str::headline(str_replace('.', ' ', $key)),
-            'column' => $key,
-            'input' => 'number-range',
-            'multiple' => false,
-            'options' => [],
-            'default' => $defaultValue,
-            'rangeMin' => $min,
-            'rangeMax' => $max,
-            'rangeStep' => $step,
-        ];
-
-        return $this;
-    }
-
     /**
      * @param array<int, AllowedFilter|Filter|string> $filters
      */
@@ -154,19 +91,35 @@ class Table
             if (is_string($filter)) {
                 $column = $this->columns[$filter] ?? null;
                 $type = $column->meta['type'] ?? 'string';
+                $label = $column?->label ?? Str::headline(str_replace('.', ' ', $filter));
 
                 if (in_array($type, ['number', 'int', 'float', 'decimal'], true)) {
-                    $filter = Filter::numberRange($filter);
+                    $filter = Filter::numberRange(key: $filter, label: $label);
                 } elseif (in_array($type, ['date', 'datetime', 'timestamp'], true)) {
-                    $filter = Filter::dateRange($filter);
+                    $filter = Filter::dateRange(key: $filter, label: $label);
                 } elseif (in_array($type, ['boolean', 'bool'], true)) {
-                    $filter = Filter::exact($filter);
+                    $filter = Filter::exact(key: $filter, label: $label);
                 } else {
-                    $filter = Filter::partial($filter);
+                    $filter = Filter::partial(key: $filter, label: $label);
                 }
             }
 
             if ($filter instanceof Filter) {
+                if (!isset($this->uiFilters[$filter->key])) {
+                    $this->uiFilters[$filter->key] = [
+                        'key' => $filter->key,
+                        'label' => $filter->label,
+                        'column' => $filter->column,
+                        'input' => $filter->input,
+                        'match' => $filter->match,
+                        'multiple' => $filter->multiple,
+                        'options' => $this->formatOptions($filter->options),
+                        'default' => $filter->default,
+                        'rangeMin' => $filter->rangeMin,
+                        'rangeMax' => $filter->rangeMax,
+                        'rangeStep' => $filter->rangeStep,
+                    ];
+                }
                 $resolvedFilters[] = AllowedFilter::custom($filter->key, $filter, $filter->column);
             } else {
                 $resolvedFilters[] = $filter;
