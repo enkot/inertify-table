@@ -86,16 +86,14 @@ public function index()
 {
     $table = Table::make('users')
         ->columns([
-        Column::make('name')->sortable()->filterable(),
-        Column::make('email')->sortable()->filterable(),
-            Column::make('role')->filterable(),
-        Column::make('created_at')->type('date')->sortable()->filterable(),
+            Column::make('name'),
+            Column::make('email'),
+            Column::make('role'),
+            Column::make('created_at')->type('date'),
         ])
-        ->allowedSorts(['name', 'email', 'created_at'])
-      ->allowedFilters(['name', 'email', 'created_at'])
-        ->defaultSort('-created_at')
-        ->defaultPerPage(15)
-        ->perPageOptions([15, 30, 50]);
+        ->sorts(['name', 'email', 'created_at'])
+        ->filters(['name', 'email', 'created_at'])
+        ->defaultSort('-created_at');
 
     return Inertia::render('Users/Index', [
         ...$table->payload(
@@ -109,14 +107,14 @@ public function index()
 
 ### Filter inference from column type
 
-When `allowedFilters([...])` receives a string key, the package infers the filter type from `Column::type(...)`:
+When `filters([...])` receives a string key, the package infers the filter type from `Column::type(...)`:
 
 - `number` / `int` / `float` / `decimal` => `Filter::numberRange(...)`
 - `date` / `datetime` / `timestamp` => `Filter::dateRange(...)`
 - `boolean` / `bool` => `Filter::exact(...)`
 - everything else => `Filter::partial(...)`
 
-Use explicit `Filter::...` entries in `allowedFilters([...])` when you need custom behavior (for example `Filter::select(...)` with options or callback filters).
+Use explicit `Filter::...` entries in `filters([...])` when you need custom behavior (for example `Filter::select(...)` with options or callback filters).
 
 ### Inertia macro shortcut
 
@@ -128,8 +126,8 @@ return Inertia::render('Users/Index', [
         name: 'users',
         query: User::query(),
         configure: fn ($table) => $table
-            ->allowedSorts(['name', 'email'])
-            ->allowedFilters([Filter::partial('name')]),
+            ->sorts(['name', 'email'])
+            ->filters([Filter::partial('name')]),
         rowsKey: 'users',
         metaKey: 'meta',
     ),

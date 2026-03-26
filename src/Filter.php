@@ -30,8 +30,8 @@ class Filter implements SpatieFilter
 
     public function __construct(
         public string $key,
-        public string $label,
-        public string $column,
+        public ?string $label = null,
+        public string $column = '',
         public string $input = 'text',
         public string $match = self::MATCH_PARTIAL,
         public array $options = [],
@@ -41,13 +41,17 @@ class Filter implements SpatieFilter
         public int|float|string|null $rangeMin = null,
         public int|float|string|null $rangeMax = null,
         public int|float|null $rangeStep = null
-    ) {}
+    ) {
+        if ($this->column === '') {
+            $this->column = $this->key;
+        }
+    }
 
     public static function partial(string $key, ?string $column = null, ?string $label = null): self
     {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $column ?? $key,
             input: 'text',
             match: self::MATCH_PARTIAL
@@ -58,7 +62,7 @@ class Filter implements SpatieFilter
     {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $column ?? $key,
             input: 'text',
             match: self::MATCH_EXACT
@@ -74,7 +78,7 @@ class Filter implements SpatieFilter
     ): self {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $column ?? $key,
             input: 'select',
             match: self::MATCH_EXACT,
@@ -91,7 +95,7 @@ class Filter implements SpatieFilter
     ): self {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $key,
             input: $input,
             match: self::MATCH_CALLBACK,
@@ -109,7 +113,7 @@ class Filter implements SpatieFilter
     ): self {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $column ?? $key,
             input: 'number-range',
             match: self::MATCH_NUMBER_RANGE,
@@ -128,7 +132,7 @@ class Filter implements SpatieFilter
     ): self {
         return new self(
             key: $key,
-            label: $label ?? Str::headline(str_replace('.', ' ', $key)),
+            label: $label,
             column: $column ?? $key,
             input: 'date-range',
             match: self::MATCH_DATE_RANGE,

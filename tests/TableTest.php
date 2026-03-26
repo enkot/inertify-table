@@ -24,14 +24,14 @@ class TableTest extends TestCase
 
         $table = Table::make('users')
             ->columns([
-                Column::make('name', 'Name')->sortable(),
-                Column::make('role', 'Role')->filterable(),
+                Column::make('name', 'Name'),
+                Column::make('role', 'Role'),
             ])
-            ->allowedFilters([
+            ->filters([
                 Filter::select('role', ['admin' => 'Admin', 'user' => 'User']),
                 'name',
             ])
-            ->allowedSorts(['name', 'role']);
+            ->sorts(['name', 'role']);
 
         $meta = $table->meta($request);
 
@@ -61,7 +61,7 @@ class TableTest extends TestCase
 
     public function test_it_formats_options_correctly(): void
     {
-        $table = Table::make('users')->allowedFilters([Filter::select('role', ['admin', 'user'])]);
+        $table = Table::make('users')->filters([Filter::select('role', ['admin', 'user'])]);
 
         $meta = $table->meta();
         $options = $meta['filters'][0]['options'];

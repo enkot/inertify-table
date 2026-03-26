@@ -25,6 +25,9 @@ class Table
     /** @var array<string, array> */
     private array $uiFilters = [];
 
+    /** @var array<string, array> */
+    private array $uiSorts = [];
+
     /** @var array<int, AllowedFilter|string> */
     private array $spatieFilters = [];
 
@@ -83,7 +86,7 @@ class Table
     /**
      * @param array<int, AllowedFilter|Filter|string> $filters
      */
-    public function allowedFilters(array $filters): self
+    public function filters(array $filters): self
     {
         $resolvedFilters = [];
 
@@ -106,9 +109,15 @@ class Table
 
             if ($filter instanceof Filter) {
                 if (!isset($this->uiFilters[$filter->key])) {
+                    $column = $this->columns[$filter->key] ?? null;
+                    $label = $filter->label ?? $column?->label ?? Str::headline(str_replace('.', ' ', $filter->key));
+
+                    // Assign computed label back to filter
+                    $filter->label = $label;
+
                     $this->uiFilters[$filter->key] = [
                         'key' => $filter->key,
-                        'label' => $filter->label,
+                        'label' => $label,
                         'column' => $filter->column,
                         'input' => $filter->input,
                         'match' => $filter->match,
@@ -132,11 +141,38 @@ class Table
     }
 
     /**
-     * @param array<int, AllowedSort|string> $sorts
+     * @param array<int, AllowedSort|Sort|string> $sorts
      */
-    public function allowedSorts(array $sorts): self
+    public function sorts(array $sorts): self
     {
-        $this->spatieSorts = $sorts;
+        $resolvedSorts = [];
+
+        foreach ($sorts as $sort) {
+            if (is_string($sort)) {
+                $sort = Sort::field(key: $sort);
+            }
+
+            if ($sort instanceof Sort) {
+                if (!isset($this->uiSorts[$sort->key])) {
+                    $column = $this->columns[$sort->key] ?? null;
+                    $label = $sort->label ?? $column?->label ?? Str::headline(str_replace('.', ' ', $sort->key));
+
+                    // Assign the computed label back to the sort object so it can be used if needed
+                    $sort->label = $label;
+
+                    $this->uiSorts[$sort->key] = [
+                        'key' => $sort->key,
+                        'label' => $label,
+                        'column' => $sort->column,
+                    ];
+                }
+                $resolvedSorts[] = AllowedSort::custom($sort->key, $sort, $sort->column);
+            } else {
+                $resolvedSorts[] = $sort;
+            }
+        }
+
+        $this->spatieSorts = $resolvedSorts;
 
         return $this;
     }
@@ -306,22 +342,19 @@ class Table
     {
         $state = $this->state($request);
 
-        $columns = array_map(function (Column $column): array {
-            $columnArray = $column->toArray();
-            return $columnArray;
-        }, array_values($this->columns));
-
         $sorts = [];
+        $sortKeys = [];
         foreach ($this->spatieSorts as $spatieSort) {
             $sortName = $spatieSort instanceof AllowedSort ? $spatieSort->getName() : $spatieSort;
+            $sortKeys[] = $sortName;
+        }
 
-            // Format for frontend
-            $sorts[] = [
-                'key' => $sortName,
-                'label' => Str::headline(str_replace('.', ' ', $sortName)),
-                'column' => $sortName,
-                'direction' => $state->sort === $sortName ? $state->direction : null,
-            ];
+        foreach ($this->uiSorts as $key => $sort) {
+            $sort['direction'] = $state->sort === $key ? $state->direction : null;
+            $sorts[] = $sort;
+            if (!in_array($key, $sortKeys, true)) {
+                $sortKeys[] = $key;
+            }
         }
 
         $filters = [];
@@ -329,6 +362,13 @@ class Table
             $filter['value'] = Arr::get($state->filters, $key);
             $filters[] = $filter;
         }
+
+        $columns = array_map(function (Column $column) use ($sortKeys): array {
+            $columnArray = $column->toArray();
+            $columnArray['sortable'] = in_array($column->key, $sortKeys, true);
+            $columnArray['filterable'] = array_key_exists($column->key, $this->uiFilters);
+            return $columnArray;
+        }, array_values($this->columns));
 
         return [
             'name' => $this->name,

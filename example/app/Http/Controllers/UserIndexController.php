@@ -16,28 +16,17 @@ class UserIndexController extends Controller
     {
         $table = Table::make('users')
             ->columns([
-                Column::make('id', 'ID')->type('number')->filterable(),
-                Column::make('name', 'Name')->sortable()->filterable(),
-                Column::make('email', 'Email')->sortable()->filterable(),
-                Column::make('created_at', 'Created')->type('date')->sortable()->filterable(),
+                Column::make('id', 'ID')->type('number'),
+                Column::make('name', 'Name'),
+                Column::make('email', 'Email'),
+                Column::make('created_at', 'Created')->type('date'),
             ])
-            ->allowedSorts(['name', 'email', 'created_at'])
-            ->allowedFilters(['id', 'name', 'email', 'created_at'])
-            ->defaultSort('-created_at')
-            ->defaultPerPage(10)
-            ->perPageOptions([10, 25, 50]);
-
-        $payload = $table->payload(
-            query: User::query()->select([
-                'id',
-                'name',
-                'email',
-                'created_at',
-            ]),
-        );
+            ->sorts(['id', 'name', 'email', 'created_at'])
+            ->filters(['name', 'email', 'created_at'])
+            ->defaultSort('-created_at');
 
         return Inertia::render('users/Index', [
-            'table' => $payload,
+            'table' => $table->payload(User::query()),
         ]);
     }
 }
