@@ -8,6 +8,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
 use Inertify\Table\Column;
+use Inertify\Table\Filter;
 use Inertify\Table\Table;
 
 class UserIndexController extends Controller
@@ -22,7 +23,12 @@ class UserIndexController extends Controller
                 Column::make('created_at', 'Created')->type('date'),
             ])
             ->sorts(['id', 'name', 'email', 'created_at'])
-            ->filters(['name', 'email', 'created_at'])
+            ->filters([
+                'name',
+                'email',
+                'created_at',
+                Filter::global('search', ['name', 'email']),
+            ])
             ->defaultSort('-created_at');
 
         return Inertia::render('users/Index', [

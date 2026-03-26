@@ -6,11 +6,8 @@ import {
   type ComputedRef,
   type Ref,
 } from "vue";
-import type {
-  UiFilter,
-  UseTableFiltersApi,
-} from "./useTableFilters";
-import { toOperatorValue, toText } from "./useTableFilters";
+import type { UiFilter, UseTableFiltersApi } from "./useTableFilters";
+import { buildUiFilters, toOperatorValue, toText } from "./useTableFilters";
 
 export interface UseTableSearchFilterOptions {
   preferredKeys?: string[];
@@ -26,7 +23,7 @@ export function useTableSearchFilter(
   filters: UseTableFiltersApi,
   options: UseTableSearchFilterOptions = {},
 ): UseTableSearchFilterApi {
-  const preferredKeys = options.preferredKeys ?? ["name"];
+  const preferredKeys = options.preferredKeys ?? ["search", "global", "name"];
   const debounceMs = options.debounceMs ?? 300;
 
   const searchTerm = ref("");
@@ -34,7 +31,8 @@ export function useTableSearchFilter(
   let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   const searchFilter = computed<UiFilter | null>(() => {
-    const textFilters = filters.items.value.filter(
+    const allUiFilters = buildUiFilters(filters.filters.value);
+    const textFilters = allUiFilters.filter(
       (filter) => filter.control === "text",
     );
 

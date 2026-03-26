@@ -49,13 +49,13 @@ export interface UseTableFiltersApi {
   reset: () => void;
 }
 
-export function useTableFilters(
-  tableApi?: UseTableApi,
-): UseTableFiltersApi {
+export function useTableFilters(tableApi?: UseTableApi): UseTableFiltersApi {
   const table = tableApi ?? useTableContext();
 
   const filters = computed(() => table.meta.value.filters);
-  const items = computed(() => buildUiFilters(filters.value));
+  const items = computed(() =>
+    buildUiFilters(filters.value).filter((f) => !f.hidden),
+  );
   const active = computed<ActiveFilterPill[]>(() => {
     const pills: ActiveFilterPill[] = [];
 
@@ -230,7 +230,7 @@ function normalizeFilterRule(
   return fallback;
 }
 
-function buildUiFilters(filters: TableFilter[]): UiFilter[] {
+export function buildUiFilters(filters: TableFilter[]): UiFilter[] {
   return filters.map((filter) => {
     const isSelect = filter.input === "select" || filter.input === "boolean";
     const isNumberRange = filter.input === "number-range";

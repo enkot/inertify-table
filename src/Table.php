@@ -127,6 +127,7 @@ class Table
                         'rangeMin' => $filter->rangeMin,
                         'rangeMax' => $filter->rangeMax,
                         'rangeStep' => $filter->rangeStep,
+                        'hidden' => $filter->hidden ?? false,
                     ];
                 }
                 $resolvedFilters[] = AllowedFilter::custom($filter->key, $filter, $filter->column);

@@ -40,11 +40,19 @@ class Filter implements SpatieFilter
         public ?Closure $callback = null,
         public int|float|string|null $rangeMin = null,
         public int|float|string|null $rangeMax = null,
-        public int|float|null $rangeStep = null
+        public int|float|null $rangeStep = null,
+        public bool $hidden = false
     ) {
         if ($this->column === '') {
             $this->column = $this->key;
         }
+    }
+
+    public function hidden(bool $hidden = true): self
+    {
+        $this->hidden = $hidden;
+
+        return $this;
     }
 
     public static function partial(string $key, ?string $column = null, ?string $label = null): self
@@ -100,6 +108,38 @@ class Filter implements SpatieFilter
             input: $input,
             match: self::MATCH_CALLBACK,
             callback: $callback
+        );
+    }
+
+    public static function global(
+        string $key,
+        array $columns,
+        ?string $label = null,
+        ?Closure $filter = null,
+    ): self {
+        return new self(
+            key: $key,
+            label: $label,
+            column: $key,
+            input: 'text',
+            match: self::MATCH_CALLBACK,
+            hidden: true,
+            callback: function (\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query, mixed $value, string $property) use ($columns, $filter) {
+                // Ignore empty global searches
+                if (blank($value)) {
+                    return;
+                }
+
+                $query->where(function ($query) use ($columns, $value, $property, $filter) {
+                    foreach ($columns as $column) {
+                        $query->orWhere($column, 'like', "%{$value}%");
+                    }
+
+                    if ($filter) {
+                        $filter($query, $value, $property);
+                    }
+                });
+            }
         );
     }
 

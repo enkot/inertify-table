@@ -61,6 +61,7 @@ export interface TableFilter {
   rangeMin?: string | number | null;
   rangeMax?: string | number | null;
   rangeStep?: number | null;
+  hidden?: boolean;
 }
 
 export interface TablePagination {
