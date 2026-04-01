@@ -138,7 +138,7 @@ class Filter implements SpatieFilter
 
                 $query->where(function ($query) use ($columns, $value, $property, $filter) {
                     foreach ($columns as $column) {
-                        $query->orWhere($column, 'like', "%{$value}%");
+                        $query->orWhereRaw("LOWER({$column}) LIKE ?", ["%{$value}%"]);
                     }
 
                     if ($filter) {
