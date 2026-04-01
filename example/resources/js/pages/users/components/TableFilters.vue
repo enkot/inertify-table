@@ -56,7 +56,6 @@ const {
 } = useDraftFilterEditor(tableFilters);
 
 const { searchTerm, searchFilter } = useTableSearchFilter(tableFilters, {
-    preferredKeys: ["name"],
     debounceMs: 300,
 });
 
@@ -149,8 +148,8 @@ function cancelDraftFilter(): void {
                             </Select>
 
                             <Input v-else-if="draftRule === 'greater_than'"
-                                :type="draftFilter.input === 'date-range' ? 'date' : 'number'"
-                                v-model="draftRangeFrom" placeholder="Value" />
+                                :type="draftFilter.input === 'date-range' ? 'date' : 'number'" v-model="draftRangeFrom"
+                                placeholder="Value" />
 
                             <Input v-else-if="draftRule === 'less_than'"
                                 :type="draftFilter.input === 'date-range' ? 'date' : 'number'" v-model="draftRangeTo"

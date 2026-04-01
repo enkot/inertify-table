@@ -125,6 +125,12 @@ class Filter implements SpatieFilter
             match: self::MATCH_CALLBACK,
             hidden: true,
             callback: function (\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Query\Builder $query, mixed $value, string $property) use ($columns, $filter) {
+                if (is_array($value) && array_key_exists('value', $value)) {
+                    $value = $value['value'];
+                } elseif (is_array($value)) {
+                    $value = \Illuminate\Support\Arr::first($value);
+                }
+
                 // Ignore empty global searches
                 if (blank($value)) {
                     return;
