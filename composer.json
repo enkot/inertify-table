@@ -15,14 +15,14 @@
   ],
   "require": {
     "php": "^8.2",
-    "illuminate/database": "^10.0|^11.0|^12.0",
-    "illuminate/http": "^10.0|^11.0|^12.0",
-    "illuminate/support": "^10.0|^11.0|^12.0",
-    "inertiajs/inertia-laravel": "^2.0",
+    "illuminate/database": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/http": "^10.0|^11.0|^12.0|^13.0",
+    "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
+    "inertiajs/inertia-laravel": "^2.0|^3.0",
     "spatie/laravel-query-builder": "^7.0"
   },
   "require-dev": {
-    "orchestra/testbench": "^8.0|^9.0|^10.0",
+    "orchestra/testbench": "^8.0|^9.0|^10.0|^11.0",
     "phpunit/phpunit": "^10.5|^11.0"
   },
   "autoload": {

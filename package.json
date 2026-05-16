@@ -1,6 +1,6 @@
 {
   "name": "@inertify/table-vue",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Headless Vue composables and components for inertify/table.",
   "publishConfig": {
     "access": "public"
@@ -18,7 +18,7 @@
     "check": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@inertiajs/vue3": "^2.0.0",
+    "@inertiajs/vue3": "^2.0.0 || ^3.0.0",
     "vue": "^3.3.0"
   },
   "devDependencies": {
